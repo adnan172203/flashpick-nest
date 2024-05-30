@@ -1,0 +1,26 @@
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      JSON_TOKEN_KEY: 'myvariablevalue'
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install common Dependencies
+        run: |
+          cd server
+          npm install
+
+      # - name: Run tests
+      #   run: cd server && npm run test
