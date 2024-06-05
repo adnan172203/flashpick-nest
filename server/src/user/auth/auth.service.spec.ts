@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
 import { User } from '../entities/user.entity';
+import { HttpException } from '@nestjs/common';
 
 const mockRepository = {
   create: jest.fn(),
@@ -91,6 +92,63 @@ describe('AuthService', () => {
       } catch (error) {
         expect(error).toBe('Username or email already exists');
       }
+    });
+  });
+
+  describe('signIn', () => {
+    it('should throw an exception when user is not found', async () => {
+      const signinParams = {
+        email: 'test1@example.com',
+        password: 'password123',
+      };
+
+      mockRepository.findOne.mockResolvedValue(null);
+
+      await expect(authService.signIn(signinParams)).rejects.toThrow(
+        new HttpException('Invalid credentials', 400)
+      );
+    });
+
+    it('should throw an exception when password is incorrect', async () => {
+      const signinParams = {
+        email: 'test1@example.com',
+        password: 'password123',
+      };
+
+      const mockUser = {
+        id: 1,
+        name: 'John Doe',
+        email: 'test@example.com',
+        password: 'hashedPassword',
+      };
+
+      mockRepository.findOne.mockResolvedValue(mockUser);
+
+      (bcrypt.compare as jest.Mock).mockResolvedValue(false);
+
+      await expect(authService.signIn(signinParams)).rejects.toThrow(
+        new HttpException('Invalid credentials', 400)
+      );
+    });
+
+    it('should login user and return the token', async () => {
+      const signinParams = {
+        email: 'test1@example.com',
+        password: 'password123',
+      };
+
+      const mockUser = {
+        id: 1,
+        email: signinParams.email,
+        password: 'hashedPassword',
+      };
+
+      mockRepository.findOne.mockResolvedValue(mockUser);
+
+      const result = await authService.signIn(signinParams);
+
+      expect(result).toBeDefined();
+      // Additional checks for JWT token could be done here
     });
   });
 });

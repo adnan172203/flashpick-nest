@@ -13,6 +13,11 @@ interface SignupParams {
   password: string;
 }
 
+interface SigninParams {
+  email: string;
+  password: string;
+}
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -37,6 +42,27 @@ export class AuthService {
     const savedUser = await this.userRepository.save(user);
 
     return this.generateJWT(name, savedUser.id);
+  }
+
+  async signIn({ email, password }: SigninParams) {
+    const user = await this.userRepository.findOne({
+      where: {
+        email,
+      },
+    });
+    if (!user) {
+      throw new HttpException('Invalid credentials', 400);
+    }
+
+    const hashedPassword = user.password;
+
+    const isValidPassword = await bcrypt.compare(password, hashedPassword);
+
+    if (!isValidPassword) {
+      throw new HttpException('Invalid credentials', 400);
+    }
+
+    return this.generateJWT(user.name, user.id);
   }
 
   private generateJWT(name: string, id: string) {
