@@ -65,5 +65,32 @@ describe('AuthService', () => {
       expect(result).toBeDefined();
       expect(mockRepository.save).toHaveBeenCalled();
     });
+
+    it('should hash the password before storing it in the database', () => {
+      const signupParams = {
+        name: 'Test User',
+        email: 'test1@example.com',
+        password: 'password123',
+      };
+
+      expect(bcrypt.hash).toHaveBeenCalledWith(signupParams.password, 10);
+    });
+
+    it('should throw a ConflictException when the email is already in use', async () => {
+      // Mock the PrismaService user.findUnique to return an existing user.
+      mockRepository.findOne.mockResolvedValue(null);
+
+      const signupParams = {
+        name: 'Test User',
+        email: 'test1@example.com',
+        password: 'password123',
+      };
+
+      try {
+        await authService.signUp(signupParams);
+      } catch (error) {
+        expect(error).toBe('Username or email already exists');
+      }
+    });
   });
 });
