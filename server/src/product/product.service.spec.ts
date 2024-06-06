@@ -108,4 +108,33 @@ describe('Product Service', () => {
       });
     });
   });
+
+  describe('update Product', () => {
+    describe('when update the product id with params', () => {
+      it('should update the product', async () => {
+        const newProudct = new Product();
+        newProudct.id = '1';
+        newProudct.name = 'Mock Product';
+        newProudct.description = 'Mock Description';
+        newProudct.price = 20;
+
+        mockRepository.findOneBy.mockReturnValue(newProudct);
+        mockRepository.save.mockReturnValue(newProudct);
+
+        const updatedProduct = { name: 'Updated Name' };
+
+        const savedProduct = await service.updateProduct('1', updatedProduct);
+
+        expect(savedProduct.id).toBeDefined();
+      });
+    });
+    describe('otherwise', () => {
+      it('should throw a NotFoundException if the product is not found', async () => {
+        mockRepository.findOneBy.mockReturnValue(null);
+        await expect(service.updateProduct('456', {})).rejects.toThrow(
+          NotFoundException
+        );
+      });
+    });
+  });
 });

@@ -17,6 +17,20 @@ interface ProductParams {
   additionalText: string;
 }
 
+interface UpdateProductParams {
+  name?: string;
+  description?: string;
+  price?: number;
+  quantity?: number;
+  sku?: string;
+  color?: string;
+  size?: string;
+  stock?: string;
+  status?: boolean;
+  fullDescription?: string;
+  additionalText?: string;
+}
+
 @Injectable()
 export class ProductService {
   constructor(
@@ -30,5 +44,20 @@ export class ProductService {
     const savedProduct = await this.productRepository.save(newProduct);
 
     return savedProduct;
+  }
+
+  async updateProduct(id: string, { ...product }: UpdateProductParams) {
+    const existingProduct = await this.productRepository.findOneBy({ id });
+
+    if (!existingProduct) {
+      throw new NotFoundException('product not found');
+    }
+
+    const updatedProduct = await this.productRepository.save({
+      ...existingProduct,
+      ...product,
+    });
+
+    return updatedProduct;
   }
 }
