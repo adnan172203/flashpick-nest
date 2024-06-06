@@ -8,9 +8,6 @@ import { HttpException } from '@nestjs/common';
 const mockRepository = {
   create: jest.fn(),
   save: jest.fn(),
-  findOneBy: jest.fn(),
-  find: jest.fn(),
-  remove: jest.fn(),
   findOne: jest.fn(),
 };
 describe('AuthService', () => {
@@ -54,6 +51,9 @@ describe('AuthService', () => {
         name: 'Test User',
         email: 'test1@example.com',
         password: 'password123',
+        address: 'Test Address',
+        role: 'user',
+        phoneNumber: '1234567890',
       };
 
       mockRepository.save.mockResolvedValue({
@@ -85,6 +85,9 @@ describe('AuthService', () => {
         name: 'Test User',
         email: 'test1@example.com',
         password: 'password123',
+        address: 'Test Address',
+        role: 'user',
+        phoneNumber: '1234567890',
       };
 
       try {

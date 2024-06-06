@@ -1,9 +1,9 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { User, UserRole } from '../entities/user.entity';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
-import { User } from '../entities/user.entity';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -11,6 +11,9 @@ interface SignupParams {
   name: string;
   email: string;
   password: string;
+  address: string;
+  role: string;
+  phoneNumber: string;
 }
 
 interface SigninParams {
@@ -24,7 +27,14 @@ export class AuthService {
     @InjectRepository(User) private readonly userRepository: Repository<User>
   ) {}
 
-  async signUp({ name, email, password }: SignupParams): Promise<string> {
+  async signUp({
+    name,
+    email,
+    password,
+    address,
+    role,
+    phoneNumber,
+  }: SignupParams): Promise<string> {
     const userExists = await this.userRepository.findOne({ where: { email } });
 
     if (userExists) {
@@ -37,6 +47,9 @@ export class AuthService {
       name,
       email,
       password: hashedPassword,
+      address,
+      role: role as UserRole,
+      phoneNumber,
     });
 
     const savedUser = await this.userRepository.save(user);
