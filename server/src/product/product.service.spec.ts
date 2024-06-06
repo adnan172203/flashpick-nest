@@ -137,4 +137,35 @@ describe('Product Service', () => {
       });
     });
   });
+
+  describe('delete Product', () => {
+    it('should be defined', async () => {
+      expect(service.deleteProduct).toBeDefined();
+    });
+
+    describe('when pass id', () => {
+      it('should delete the product', async () => {
+        const exisProduct = new Product();
+        exisProduct.id = '1';
+        exisProduct.name = 'Mock Product';
+        exisProduct.description = 'Mock Description';
+        exisProduct.price = 20;
+
+        mockRepository.findOneBy.mockReturnValue(exisProduct);
+
+        await service.deleteProduct('1');
+
+        expect(mockRepository.remove).toHaveBeenCalledWith(exisProduct);
+      });
+    });
+    describe('otherwise', () => {
+      it('should throw NotFoundException for non-existing product', async () => {
+        mockRepository.findOneBy.mockReturnValue(null);
+
+        await expect(service.deleteProduct('456')).rejects.toThrow(
+          NotFoundException
+        );
+      });
+    });
+  });
 });

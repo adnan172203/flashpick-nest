@@ -60,4 +60,14 @@ export class ProductService {
 
     return updatedProduct;
   }
+
+  async deleteProduct(id: string) {
+    const product = await this.productRepository.findOneBy({ id });
+
+    if (!product) {
+      throw new NotFoundException('product not found');
+    }
+
+    return this.productRepository.remove(product);
+  }
 }
