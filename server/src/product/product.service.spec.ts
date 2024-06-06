@@ -168,4 +168,31 @@ describe('Product Service', () => {
       });
     });
   });
+
+  describe('get all products', () => {
+    it('should be defined', () => {
+      expect(service.getAllProducts).toBeDefined();
+    });
+
+    describe('when request', () => {
+      const products = [
+        { id: '1', name: 'Product 1' },
+        { id: '2', name: 'Product 2' },
+      ];
+      it('should fetch all products', async () => {
+        mockRepository.find.mockReturnValue(products);
+
+        const result = await service.getAllProducts();
+
+        expect(result).toEqual(products);
+      });
+      it('should return an empty array if no products are found', async () => {
+        mockRepository.find.mockReturnValue([]);
+
+        const result = await service.getAllProducts();
+
+        expect(result).toEqual([]);
+      });
+    });
+  });
 });
