@@ -50,6 +50,19 @@ export class ProductService {
     return this.productRepository.find();
   }
 
+  async getProduct(id: string) {
+    const product = await this.productRepository.findOne({
+      where: { id },
+      relations: ['images'],
+    });
+
+    if (!product) {
+      throw new NotFoundException('Product not found');
+    }
+
+    return product;
+  }
+
   async updateProduct(id: string, { ...product }: UpdateProductParams) {
     const existingProduct = await this.productRepository.findOneBy({ id });
 

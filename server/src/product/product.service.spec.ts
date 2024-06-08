@@ -195,4 +195,42 @@ describe('Product Service', () => {
       });
     });
   });
+
+  describe('get product', () => {
+    it('should be defined', () => {
+      expect(service.getProduct).toBeDefined();
+    });
+
+    describe('when request with id', () => {
+      it('should fetch the product', async () => {
+        const expectedProduct = new Product();
+        expectedProduct.id = '1';
+        expectedProduct.name = 'Mock Product';
+        expectedProduct.description = 'Mock Description';
+        expectedProduct.price = 20;
+
+        mockRepository.findOne.mockReturnValue(expectedProduct);
+
+        const result = await service.getProduct('1');
+
+        expect(result).toEqual(expectedProduct);
+      });
+    });
+    describe('when request with wrong id', () => {
+      // Should throw a NotFoundException if product with given id does not exist
+      it('should throw a NotFoundException if product with given id does not exist', async () => {
+        const productId = '1';
+
+        mockRepository.findOne.mockResolvedValue(undefined);
+
+        await expect(service.getProduct(productId)).rejects.toThrow(
+          NotFoundException
+        );
+        expect(mockRepository.findOne).toHaveBeenCalledWith({
+          where: { id: productId },
+          relations: ['images'],
+        });
+      });
+    });
+  });
 });
