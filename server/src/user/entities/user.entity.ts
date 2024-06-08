@@ -4,7 +4,10 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
+
+import { Order } from 'src/order/entities/order.entity';
 
 export enum UserRole {
   ADMIN = 'admin',
@@ -36,6 +39,9 @@ export class User {
 
   @Column()
   password: string;
+
+  @OneToMany(() => Order, (order) => order.userId)
+  orders: Order[];
 
   @CreateDateColumn()
   createdAt: Date;
