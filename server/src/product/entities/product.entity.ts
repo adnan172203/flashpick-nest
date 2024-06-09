@@ -1,9 +1,11 @@
+import { OrderItem } from 'src/order/entities/order-item.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity('products')
@@ -43,6 +45,9 @@ export class Product {
 
   @Column({ type: 'text' })
   additionalText: string;
+
+  @OneToMany(() => OrderItem, (orderItem) => orderItem.productId)
+  orderItems: OrderItem[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;

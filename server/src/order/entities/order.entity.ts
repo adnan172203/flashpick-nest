@@ -4,9 +4,11 @@ import {
   Column,
   CreateDateColumn,
   ManyToOne,
+  OneToMany,
 } from 'typeorm';
 
 import { User } from 'src/user/entities/user.entity';
+import { OrderItem } from './order-item.entity';
 @Entity()
 export class Order {
   @PrimaryGeneratedColumn('uuid')
@@ -30,6 +32,9 @@ export class Order {
 
   @Column({ type: 'varchar' })
   paymentMethod: string;
+
+  @OneToMany(() => OrderItem, (orderItem) => orderItem.orderId)
+  orderItems: OrderItem[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
