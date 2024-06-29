@@ -4,6 +4,9 @@ import { Product } from '../../product/entities/product.entity';
 
 @Entity()
 export class OrderItem {
+  create(create: any) {
+    throw new Error('Method not implemented.');
+  }
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -24,4 +27,5 @@ export class OrderItem {
 
   @Column()
   quantity: string;
+  save: any;
 }

@@ -1,4 +1,4 @@
-import { OrderItem } from 'src/order/entities/order-item.entity';
+import { OrderItem } from '../../order/entities/order-item.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -54,4 +54,5 @@ export class Product {
 
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
+  findOneByOrFail: any;
 }

@@ -7,10 +7,13 @@ import {
   OneToMany,
 } from 'typeorm';
 
-import { User } from 'src/user/entities/user.entity';
+import { User } from '../../user/entities/user.entity';
 import { OrderItem } from './order-item.entity';
 @Entity()
 export class Order {
+  create(create: any) {
+    throw new Error('Method not implemented.');
+  }
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -24,9 +27,6 @@ export class Order {
   @Column({ type: 'varchar' })
   totalCost: string;
 
-  @Column({ type: 'timestamp' })
-  orderDate: Date;
-
   @Column({ type: 'varchar' })
   orderStatus: string;
 
@@ -38,4 +38,5 @@ export class Order {
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
+  save: any;
 }
