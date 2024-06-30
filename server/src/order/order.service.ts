@@ -56,8 +56,10 @@ export class OrderService {
     return order;
   }
 
-  async findAll() {
-    return this.ordersRepository.find();
+  async findAllOrders() {
+    return this.ordersRepository.find({
+      relations: ['orderItems'],
+    });
   }
 
   private async createOrderItemWithPrice(orderItemsDto: any[], order: any) {

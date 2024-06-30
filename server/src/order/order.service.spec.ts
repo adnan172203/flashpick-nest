@@ -99,4 +99,39 @@ describe('OrderService', () => {
       });
     });
   });
+  describe('find All Orders', () => {
+    it('should be defined', () => {
+      expect(service.findAllOrders).toBeDefined();
+    });
+
+    describe('when fetch orders', () => {
+      it('should return all orders when orders exist in the database', async () => {
+        const mockOrders = [
+          {
+            id: '1',
+            userId: 'user1',
+            name: 'Order 1',
+            totalCost: '100',
+            orderStatus: 'Pending',
+            paymentMethod: 'Credit Card',
+          },
+          {
+            id: '2',
+            userId: 'user2',
+            name: 'Order 2',
+            totalCost: '200',
+            orderStatus: 'Completed',
+            paymentMethod: 'PayPal',
+          },
+        ];
+
+        mockRepository.find.mockReturnValue(mockOrders);
+
+        const result = await service.findAllOrders();
+
+        expect(result).toEqual(mockOrders);
+        expect(mockRepository.find).toHaveBeenCalledTimes(1);
+      });
+    });
+  });
 });
