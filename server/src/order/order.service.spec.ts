@@ -4,7 +4,6 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Order } from './entities/order.entity';
 import { OrderItem } from './entities/order-item.entity';
 import { Product } from '../product/entities/product.entity';
-import { Repository } from 'typeorm';
 
 const mockRepository = {
   create: jest.fn(),
@@ -16,7 +15,7 @@ const mockRepository = {
   findOneByOrFail: jest.fn(),
 };
 
-const mockeOrder = {
+const mockOrder = {
   userId: '6ec3af70-207e-453f-84ac-69e0f4d0ce27',
   name: 'John Doe',
   totalCost: '100.00',
@@ -24,6 +23,8 @@ const mockeOrder = {
   paymentMethod: 'Credit Card',
   orderItems: [
     {
+      id: '5678',
+      orderId: '1234',
       productId: '64d2ca13-0601-457e-b48b-9b39b101774c',
       productName: 'Product 1',
       productImage: 'image1.jpg',
@@ -31,6 +32,8 @@ const mockeOrder = {
       quantity: '2',
     },
     {
+      id: '5678',
+      orderId: '1234',
       productId: 'd0dad0bd-1458-4cd5-bddf-5600d464c2b4',
       productName: 'Product 2',
       productImage: 'image2.jpg',
@@ -84,13 +87,15 @@ describe('OrderService', () => {
   describe('create Product', () => {
     describe('when pass product params', () => {
       it('should create a new product', async () => {
-        mockRepository.save.mockReturnValue(mockeOrder);
+        mockRepository.create.mockReturnValue(mockOrder);
+
+        mockRepository.save.mockReturnValue(mockOrder);
 
         mockRepository.findOneByOrFail.mockReturnValue(mockProduct);
 
-        const savedProduct = await service.createOrder(mockeOrder);
+        const savedOrder = await service.createOrder(mockOrder);
 
-        expect('Order Created Successfully').toBe(savedProduct);
+        expect(savedOrder).toBe(mockOrder);
       });
     });
   });

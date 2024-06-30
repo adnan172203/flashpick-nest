@@ -4,6 +4,17 @@ import { Repository } from 'typeorm';
 import { Order } from './entities/order.entity';
 import { OrderItem } from './entities/order-item.entity';
 import { Product } from '../product/entities/product.entity';
+import { OrderItemDTO } from './dto/order-item.dto';
+
+interface CreateOrderParams {
+  id?: string;
+  userId: string;
+  name: string;
+  totalCost: string;
+  orderStatus: string;
+  paymentMethod: string;
+  orderItems: OrderItemDTO[];
+}
 
 @Injectable()
 export class OrderService {
@@ -16,18 +27,37 @@ export class OrderService {
     private readonly productsRepository: Repository<Product>
   ) {}
 
-  async createOrder(createOrderDto: any) {
-    const { orderItems } = createOrderDto;
-
+  async createOrder({
+    id,
+    userId,
+    name,
+    totalCost,
+    orderStatus,
+    paymentMethod,
+    orderItems,
+  }: CreateOrderParams) {
     const order = this.ordersRepository.create({
-      ...createOrderDto,
-      // orderItems: itemsWithPrice,
+      id,
+      userId,
+      name,
+      totalCost,
+      orderStatus,
+      paymentMethod,
     });
     const savedOrder = await this.ordersRepository.save(order);
 
-    await this.createOrderItemWithPrice(orderItems, savedOrder);
+    const savedOrderItems = await this.createOrderItemWithPrice(
+      orderItems,
+      savedOrder
+    );
 
-    return 'Order Created Successfully';
+    savedOrder.orderItems = savedOrderItems;
+
+    return order;
+  }
+
+  async findAll() {
+    return this.ordersRepository.find();
   }
 
   private async createOrderItemWithPrice(orderItemsDto: any[], order: any) {
@@ -42,15 +72,15 @@ export class OrderService {
 
       const orderItem = this.orderItemsRepository.create({
         ...orderItemDto,
-        orderId: order, // Use the order entity here
+        orderId: order.id, // Use the order entity here
         productName: product.name, // Assuming 'name' is the field for product name
         productPrice: product.price,
       });
 
       const savedOrderItem = await this.orderItemsRepository.save(orderItem);
-      // orderItems.push(savedOrderItem);
+      orderItems.push(savedOrderItem);
     }
 
-    // return orderItems;
+    return orderItems;
   }
 }
