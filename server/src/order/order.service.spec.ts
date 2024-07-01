@@ -101,7 +101,7 @@ describe('OrderService', () => {
   });
   describe('find All Orders', () => {
     it('should be defined', () => {
-      expect(service.findAllOrders).toBeDefined();
+      expect(service.getAllOrders).toBeDefined();
     });
 
     describe('when fetch orders', () => {
@@ -127,7 +127,7 @@ describe('OrderService', () => {
 
         mockRepository.find.mockReturnValue(mockOrders);
 
-        const result = await service.findAllOrders();
+        const result = await service.getAllOrders();
 
         expect(result).toEqual(mockOrders);
         expect(mockRepository.find).toHaveBeenCalledTimes(1);

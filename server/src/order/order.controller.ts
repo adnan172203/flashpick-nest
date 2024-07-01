@@ -13,6 +13,6 @@ export class OrderController {
 
   @Get('')
   getAllProducts() {
-    return this.ordersService.findAllOrders();
+    return this.ordersService.getAllOrders();
   }
 }

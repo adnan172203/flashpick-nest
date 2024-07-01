@@ -56,7 +56,7 @@ export class OrderService {
     return order;
   }
 
-  async findAllOrders() {
+  async getAllOrders() {
     return this.ordersRepository.find({
       relations: ['orderItems'],
     });
