@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Order } from './entities/order.entity';
@@ -60,6 +60,19 @@ export class OrderService {
     return this.ordersRepository.find({
       relations: ['orderItems'],
     });
+  }
+
+  async getOrder(id: string) {
+    const order = await this.ordersRepository.findOne({
+      where: { id },
+      relations: ['orderItems'],
+    });
+
+    if (!order) {
+      throw new NotFoundException('order not found');
+    }
+
+    return order;
   }
 
   private async createOrderItemWithPrice(orderItemsDto: any[], order: any) {

@@ -4,6 +4,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Order } from './entities/order.entity';
 import { OrderItem } from './entities/order-item.entity';
 import { Product } from '../product/entities/product.entity';
+import { NotFoundException } from '@nestjs/common';
 
 const mockRepository = {
   create: jest.fn(),
@@ -84,9 +85,9 @@ describe('OrderService', () => {
     expect(service).toBeDefined();
   });
 
-  describe('create Product', () => {
-    describe('when pass product params', () => {
-      it('should create a new product', async () => {
+  describe('create Order', () => {
+    describe('when pass order params', () => {
+      it('should create a new order', async () => {
         mockRepository.create.mockReturnValue(mockOrder);
 
         mockRepository.save.mockReturnValue(mockOrder);
@@ -131,6 +132,38 @@ describe('OrderService', () => {
 
         expect(result).toEqual(mockOrders);
         expect(mockRepository.find).toHaveBeenCalledTimes(1);
+      });
+    });
+  });
+
+  describe('get single order', () => {
+    it('should be defined', () => {
+      expect(service.getOrder).toBeDefined();
+    });
+
+    describe('when request with id', () => {
+      it('should return the order', async () => {
+        mockRepository.findOne.mockReturnValue(mockOrder);
+
+        const result = await service.getOrder('1');
+
+        expect(result).toEqual(mockOrder);
+      });
+    });
+    describe('when request with wrong id', () => {
+      // Should throw a NotFoundException if order with given id does not exist
+      it('should throw a NotFoundException if order with given id does not exist', async () => {
+        const orderId = '1';
+
+        mockRepository.findOne.mockResolvedValue(undefined);
+
+        await expect(service.getOrder(orderId)).rejects.toThrow(
+          NotFoundException
+        );
+        expect(mockRepository.findOne).toHaveBeenCalledWith({
+          where: { id: orderId },
+          relations: ['orderItems'],
+        });
       });
     });
   });
