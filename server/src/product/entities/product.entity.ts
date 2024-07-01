@@ -1,4 +1,3 @@
-import { OrderItem } from '../../order/entities/order-item.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -7,6 +6,9 @@ import {
   UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
+
+import { OrderItem } from '../../order/entities/order-item.entity';
+import { ProductImageGallery } from './product-image-gallery-entity';
 
 @Entity('products')
 export class Product {
@@ -45,6 +47,9 @@ export class Product {
 
   @Column({ type: 'text' })
   additionalText: string;
+
+  @OneToMany(() => ProductImageGallery, (image) => image.productId)
+  images: ProductImageGallery[];
 
   @OneToMany(() => OrderItem, (orderItem) => orderItem.productId)
   orderItems: OrderItem[];
