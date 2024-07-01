@@ -98,7 +98,7 @@ export class OrderService {
       const orderItem = this.orderItemsRepository.create({
         ...orderItemDto,
         orderId: order.id, // Use the order entity here
-        productName: product.name, // Assuming 'name' is the field for product name
+        productName: product.name,
         productPrice: product.price,
       });
 
