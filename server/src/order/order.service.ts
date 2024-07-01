@@ -75,6 +75,16 @@ export class OrderService {
     return order;
   }
 
+  async deleteOrder(id: string) {
+    const order = await this.ordersRepository.findOneBy({ id });
+
+    if (!order) {
+      throw new NotFoundException('order not found');
+    }
+
+    return this.ordersRepository.remove(order);
+  }
+
   private async createOrderItemWithPrice(orderItemsDto: any[], order: any) {
     const orderItems = [];
 

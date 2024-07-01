@@ -33,7 +33,10 @@ export class Order {
   @Column({ type: 'varchar' })
   paymentMethod: string;
 
-  @OneToMany(() => OrderItem, (orderItem) => orderItem.orderId)
+  @OneToMany(() => OrderItem, (orderItem) => orderItem.orderId, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   orderItems: OrderItem[];
 
   @CreateDateColumn({ type: 'timestamp' })

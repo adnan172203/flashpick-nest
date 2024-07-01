@@ -167,4 +167,23 @@ describe('OrderService', () => {
       });
     });
   });
+
+  describe('when pass id', () => {
+    it('should delete the order', async () => {
+      mockRepository.findOneBy.mockReturnValue(mockOrder);
+
+      await service.deleteOrder('1');
+
+      expect(mockRepository.remove).toHaveBeenCalledWith(mockOrder);
+    });
+  });
+  describe('otherwise', () => {
+    it('should throw NotFoundException for non-existing order', async () => {
+      mockRepository.findOneBy.mockReturnValue(null);
+
+      await expect(service.deleteOrder('456')).rejects.toThrow(
+        NotFoundException
+      );
+    });
+  });
 });
