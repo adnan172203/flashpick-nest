@@ -36,8 +36,8 @@ export class Product {
   @Column({ type: 'varchar', length: 255 })
   size: string;
 
-  @Column({ type: 'varchar', length: 255 })
-  stock: string;
+  @Column({ type: 'int' })
+  stock: number;
 
   @Column({ type: 'boolean' })
   status: boolean;

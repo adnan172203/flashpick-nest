@@ -14,13 +14,10 @@ export class ProductImageGallery {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar', length: 255 })
-  name: string;
-
   @ManyToOne(() => Product, (product) => product.images)
   productId: Product;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column()
   imageUrl: string;
 
   @CreateDateColumn({ type: 'timestamp' })

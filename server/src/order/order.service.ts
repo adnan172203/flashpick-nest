@@ -95,6 +95,12 @@ export class OrderService {
         id: productId,
       });
 
+      if (!product) {
+        throw new NotFoundException('product not found for place order');
+      }
+
+      console.log('order====>>>');
+
       const orderItem = this.orderItemsRepository.create({
         ...orderItemDto,
         orderId: order.id, // Use the order entity here

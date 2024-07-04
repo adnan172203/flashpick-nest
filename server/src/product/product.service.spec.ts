@@ -1,32 +1,9 @@
-// import { Test, TestingModule } from '@nestjs/testing';
-// import { ProductService } from './product.service';
-
-// describe('ProductService', () => {
-//   let service: ProductService;
-
-//   beforeEach(async () => {
-//     const module: TestingModule = await Test.createTestingModule({
-//       providers: [ProductService],
-//     }).compile();
-
-//     service = module.get<ProductService>(ProductService);
-//   });
-
-//   it('should be defined', () => {
-//     expect(service).toBeDefined();
-//   });
-// });
-
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProductService } from './product.service';
-import { Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { NotFoundException } from '@nestjs/common';
 import { Product } from './entities/product.entity';
-
-// type MockRepositoryType<T = any> = Partial<
-//   Record<keyof Repository<T>, jest.Mock>
-// >;
+import { ProductImageGallery } from './entities/product-image-gallery-entity';
 
 const mockRepository = {
   create: jest.fn(),
@@ -35,24 +12,8 @@ const mockRepository = {
   find: jest.fn(),
   remove: jest.fn(),
   findOne: jest.fn(),
+  update: jest.fn(),
 };
-
-// const mockProduct = {
-//   id: '1',
-//   name: 'product one',
-//   description: 'product one description',
-//   price: 2,
-//   quantity: 2,
-//   sku: '12',
-//   color: 'red',
-//   size: 'sdf',
-//   stock: 12,
-//   status: true,
-//   fullDescription: 'sdf',
-//   additionalText: 'sdf',
-//   images: [{ imageUrl: 'three.jpg' }, { imageUrl: 'three-another.jpg' }],
-//   productId: "123"
-// };
 
 const mockProduct = {
   id: '1',
@@ -63,18 +24,21 @@ const mockProduct = {
   sku: '12',
   color: 'red',
   size: 'sdf',
-  stock: '12',
+  stock: 12,
   status: true,
   fullDescription: 'sdf',
   additionalText: 'sdf',
+  images: [
+    {
+      imageUrl: 'three.jpg',
+    },
+    {
+      imageUrl: 'three-another.jpg',
+    },
+  ],
 };
 
 describe('Product Service', () => {
-  // const mockRepository = {
-  //   create: jest.fn().mockReturnValue({ ...productParams }),
-  //   save: jest.fn().mockReturnValue({ ...productParams }),
-  // };
-
   let service: ProductService;
   // let productRepository;
 
@@ -84,6 +48,10 @@ describe('Product Service', () => {
         ProductService,
         {
           provide: getRepositoryToken(Product),
+          useValue: mockRepository,
+        },
+        {
+          provide: getRepositoryToken(ProductImageGallery),
           useValue: mockRepository,
         },
       ],
@@ -112,14 +80,14 @@ describe('Product Service', () => {
   describe('update Product', () => {
     describe('when update the product id with params', () => {
       it('should update the product', async () => {
-        const newProudct = new Product();
-        newProudct.id = '1';
-        newProudct.name = 'Mock Product';
-        newProudct.description = 'Mock Description';
-        newProudct.price = 20;
+        const newProduct = new Product();
+        newProduct.id = '1';
+        newProduct.name = 'Mock Product';
+        newProduct.description = 'Mock Description';
+        newProduct.price = 20;
 
-        mockRepository.findOneBy.mockReturnValue(newProudct);
-        mockRepository.save.mockReturnValue(newProudct);
+        mockRepository.findOne.mockReturnValue(newProduct);
+        mockRepository.update.mockResolvedValue(newProduct);
 
         const updatedProduct = { name: 'Updated Name' };
 
@@ -130,7 +98,7 @@ describe('Product Service', () => {
     });
     describe('otherwise', () => {
       it('should throw a NotFoundException if the product is not found', async () => {
-        mockRepository.findOneBy.mockReturnValue(null);
+        mockRepository.findOne.mockReturnValue(null);
         await expect(service.updateProduct('456', {})).rejects.toThrow(
           NotFoundException
         );

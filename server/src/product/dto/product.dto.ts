@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import { IsString, IsInt, IsBoolean, IsOptional } from 'class-validator';
 
 export class ProductDto {
@@ -23,7 +24,7 @@ export class ProductDto {
   size: string;
 
   @IsInt()
-  stock: string;
+  stock: number;
 
   @IsBoolean()
   status: boolean;
@@ -33,6 +34,18 @@ export class ProductDto {
 
   @IsString()
   additionalText: string;
+
+  @IsOptional()
+  @Type(() => ProductImageDto)
+  images?: ProductImageDto[];
+}
+
+export class ProductImageDto {
+  @IsString()
+  productId: string;
+
+  @IsString()
+  imageUrl: string;
 }
 
 export class UpdateProductDto {
@@ -66,7 +79,7 @@ export class UpdateProductDto {
 
   @IsOptional()
   @IsInt()
-  stock: string;
+  stock: number;
 
   @IsOptional()
   @IsBoolean()
@@ -79,4 +92,8 @@ export class UpdateProductDto {
   @IsOptional()
   @IsString()
   additionalText: string;
+
+  @IsOptional()
+  @Type(() => ProductImageDto)
+  images?: ProductImageDto[];
 }
