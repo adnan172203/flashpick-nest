@@ -5,10 +5,13 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  JoinTable,
+  ManyToMany,
 } from 'typeorm';
 
 import { OrderItem } from '../../order/entities/order-item.entity';
 import { ProductImageGallery } from './product-image-gallery-entity';
+import { Category } from './category.entity';
 
 @Entity('products')
 export class Product {
@@ -53,6 +56,10 @@ export class Product {
 
   @OneToMany(() => OrderItem, (orderItem) => orderItem.productId)
   orderItems: OrderItem[];
+
+  @ManyToMany(() => Category, (category) => category.products)
+  @JoinTable()
+  categories: Category[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
