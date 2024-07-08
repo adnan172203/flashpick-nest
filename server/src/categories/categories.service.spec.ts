@@ -90,4 +90,41 @@ describe('CategoriesService', () => {
       });
     });
   });
+
+  describe('Get category by id', () => {
+    it('should be defined', () => {
+      expect(service.findCategoryById).toBeDefined();
+    });
+
+    describe('when request with id', () => {
+      it('should fetch the specific category', async () => {
+        const expectedCategory = new Category();
+        expectedCategory.id = '1';
+        expectedCategory.name = 'Mock Category';
+
+        mockRepository.findOne.mockReturnValue(expectedCategory);
+
+        const result = await service.findCategoryById('1');
+
+        expect(result).toEqual(expectedCategory);
+      });
+    });
+    describe('when category does not exist', () => {
+      it('should throw a NotFoundException', async () => {
+        const categoryId = '1';
+
+        // mockRepository.findOne.mockResolvedValue(undefined);
+        mockRepository.findOne.mockRejectedValue(new NotFoundException());
+
+        await expect(service.findCategoryById(categoryId)).rejects.toThrow(
+          NotFoundException
+        );
+
+        expect(mockRepository.findOne).toHaveBeenCalledWith({
+          where: { id: categoryId },
+          relations: ['products'],
+        });
+      });
+    });
+  });
 });
