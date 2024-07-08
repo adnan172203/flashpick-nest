@@ -18,6 +18,16 @@ const mockCategory = {
   name: 'category one',
 };
 
+const categoriesWithProducts = [
+  { id: 1, name: 'Category 1', products: [{ id: 1, name: 'Product 1' }] },
+  { id: 2, name: 'Category 2', products: [{ id: 2, name: 'Product 2' }] },
+];
+
+const categoriesWithoutProducts = [
+  { id: 1, name: 'Category 1', products: [] },
+  { id: 2, name: 'Category 2', products: [] },
+];
+
 describe('CategoriesService', () => {
   let service: CategoriesService;
 
@@ -47,6 +57,36 @@ describe('CategoriesService', () => {
         const savedCategory = await service.createCategory(mockCategory);
 
         expect(savedCategory).toBe(mockCategory);
+      });
+    });
+  });
+
+  describe('get all categories', () => {
+    it('should be defined', () => {
+      expect(service.findAllCategories).toBeDefined();
+    });
+
+    describe('when request', () => {
+      it('should return all categories with their associated products', async () => {
+        mockRepository.find.mockReturnValue(categoriesWithProducts);
+
+        const result = await service.findAllCategories();
+
+        expect(result).toEqual(categoriesWithProducts);
+      });
+      it('should handle categories with no associated products', async () => {
+        mockRepository.find.mockReturnValue(categoriesWithoutProducts);
+
+        const result = await service.findAllCategories();
+
+        expect(result).toEqual(categoriesWithoutProducts);
+      });
+      it('should return an empty array if no categories are found', async () => {
+        mockRepository.find.mockReturnValue([]);
+
+        const result = await service.findAllCategories();
+
+        expect(result).toEqual([]);
       });
     });
   });

@@ -13,4 +13,10 @@ export class CategoriesService {
   async createCategory({ ...category }) {
     return this.categoryRepository.save(category);
   }
+
+  async findAllCategories() {
+    return this.categoryRepository.find({
+      relations: ['products'],
+    });
+  }
 }
