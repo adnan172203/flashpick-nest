@@ -11,7 +11,7 @@ import {
 
 import { OrderItem } from '../../order/entities/order-item.entity';
 import { ProductImageGallery } from './product-image-gallery-entity';
-import { Category } from './category.entity';
+import { Category } from '../../categories/entities/category.entity';
 
 @Entity('products')
 export class Product {
@@ -58,7 +58,7 @@ export class Product {
   orderItems: OrderItem[];
 
   @ManyToMany(() => Category, (category) => category.products)
-  @JoinTable()
+  @JoinTable({ name: 'product_to_category' })
   categories: Category[];
 
   @CreateDateColumn({ type: 'timestamp' })
