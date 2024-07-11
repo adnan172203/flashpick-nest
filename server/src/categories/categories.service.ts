@@ -32,4 +32,27 @@ export class CategoriesService {
 
     return category;
   }
+
+  async updateCategory(id: string, { ...category }) {
+    const existingCategory = await this.categoryRepository.findOne({
+      where: { id },
+    });
+
+    if (!existingCategory) {
+      throw new NotFoundException('Category not found');
+    }
+
+    const preloadedCategory = await this.categoryRepository.preload({
+      id,
+      ...category,
+    });
+
+    if (!preloadedCategory) {
+      throw new NotFoundException('Category not found');
+    }
+
+    this.categoryRepository.save(preloadedCategory);
+
+    return 'Category updated';
+  }
 }

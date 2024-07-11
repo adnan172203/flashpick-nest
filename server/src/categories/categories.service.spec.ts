@@ -12,6 +12,7 @@ const mockRepository = {
   remove: jest.fn(),
   findOne: jest.fn(),
   update: jest.fn(),
+  preload: jest.fn(),
 };
 
 const mockCategory = {
@@ -124,6 +125,36 @@ describe('CategoriesService', () => {
           where: { id: categoryId },
           relations: ['products'],
         });
+      });
+    });
+  });
+
+  describe('update Category', () => {
+    describe('when update the product id with params', () => {
+      it('should update the product', async () => {
+        const newCategory = new Category();
+        newCategory.id = '1';
+        newCategory.name = 'Mock Category';
+
+        mockRepository.findOne.mockReturnValue(newCategory);
+        mockRepository.preload.mockResolvedValue(newCategory);
+
+        const updatedCategory = { name: 'Updated Name' };
+
+        const savedCategory = await service.updateCategory(
+          '1',
+          updatedCategory
+        );
+
+        expect(savedCategory).toBeDefined();
+      });
+    });
+    describe('otherwise', () => {
+      it('should throw a NotFoundException if the category is not found', async () => {
+        mockRepository.findOne.mockReturnValue(null);
+        await expect(service.updateCategory('456', {})).rejects.toThrow(
+          NotFoundException
+        );
       });
     });
   });

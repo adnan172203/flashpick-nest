@@ -4,3 +4,8 @@ export class CategoryDto {
   @IsString()
   name: string;
 }
+
+export class updateCategoryDto {
+  @IsString()
+  name: string;
+}

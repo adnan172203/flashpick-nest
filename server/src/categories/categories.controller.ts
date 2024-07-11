@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { CategoryDto } from './dto/category.dto';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { CategoryDto, updateCategoryDto } from './dto/category.dto';
 import { CategoriesService } from './categories.service';
 
 @Controller('categories')
@@ -17,5 +17,10 @@ export class CategoriesController {
   @Get('/:id')
   async findOne(@Param('id') id: string) {
     return this.categoriesService.findCategoryById(id);
+  }
+
+  @Put('/:id')
+  update(@Param('id') id: string, @Body() body: updateCategoryDto) {
+    return this.categoriesService.updateCategory(id, body);
   }
 }
