@@ -52,7 +52,7 @@ describe('TagsService', () => {
     });
   });
 
-  describe('get all categories', () => {
+  describe('Get all categories', () => {
     it('should be defined', () => {
       expect(service.findAllTags).toBeDefined();
     });
@@ -76,6 +76,43 @@ describe('TagsService', () => {
         const result = await service.findAllTags();
 
         expect(result).toEqual([]);
+      });
+    });
+  });
+
+  describe('Get tag by id', () => {
+    it('should be defined', () => {
+      expect(service.findTagById).toBeDefined();
+    });
+
+    describe('when request with id', () => {
+      it('should fetch the specific tag', async () => {
+        const expectedTag = new Tag();
+        expectedTag.id = '1';
+        expectedTag.name = 'Mock Tag';
+
+        mockRepository.findOne.mockReturnValue(expectedTag);
+
+        const result = await service.findTagById('1');
+
+        expect(result).toEqual(expectedTag);
+      });
+    });
+    describe('when tag does not exist', () => {
+      it('should throw a NotFoundException', async () => {
+        const tagId = '1';
+
+        // mockRepository.findOne.mockResolvedValue(undefined);
+        mockRepository.findOne.mockRejectedValue(new NotFoundException());
+
+        await expect(service.findTagById(tagId)).rejects.toThrow(
+          NotFoundException
+        );
+
+        expect(mockRepository.findOne).toHaveBeenCalledWith({
+          where: { id: tagId },
+          relations: ['products'],
+        });
       });
     });
   });

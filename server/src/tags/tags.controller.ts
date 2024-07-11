@@ -27,7 +27,7 @@ export class TagsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.tagsService.findOne(+id);
+    return this.tagsService.findTagById(id);
   }
 
   @Patch(':id')
