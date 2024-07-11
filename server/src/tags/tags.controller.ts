@@ -22,7 +22,7 @@ export class TagsController {
 
   @Get()
   findAll() {
-    return this.tagsService.findAll();
+    return this.tagsService.findAllTags();
   }
 
   @Get(':id')

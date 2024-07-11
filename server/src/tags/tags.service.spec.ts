@@ -51,4 +51,32 @@ describe('TagsService', () => {
       });
     });
   });
+
+  describe('get all categories', () => {
+    it('should be defined', () => {
+      expect(service.findAllTags).toBeDefined();
+    });
+
+    describe('when request', () => {
+      const tags = [
+        { id: '1', name: 'tag 1' },
+        { id: '2', name: 'tag 2' },
+      ];
+      it('should return all tags', async () => {
+        mockRepository.find.mockReturnValue(tags);
+
+        const result = await service.findAllTags();
+
+        expect(result).toEqual(tags);
+      });
+
+      it('should return an empty array if no tags are found', async () => {
+        mockRepository.find.mockReturnValue([]);
+
+        const result = await service.findAllTags();
+
+        expect(result).toEqual([]);
+      });
+    });
+  });
 });

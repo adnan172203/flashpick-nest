@@ -15,10 +15,9 @@ export class TagsService {
     return this.tagsRepository.save(tags);
   }
 
-  findAll() {
-    return `This action returns all tags`;
+  async findAllTags() {
+    return this.tagsRepository.find();
   }
-
   findOne(id: number) {
     return `This action returns a #${id} tag`;
   }
