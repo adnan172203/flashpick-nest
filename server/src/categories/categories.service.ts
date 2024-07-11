@@ -55,4 +55,16 @@ export class CategoriesService {
 
     return 'Category updated';
   }
+
+  async deleteCategory(id: string) {
+    const category = await this.categoryRepository.findOneBy({ id });
+
+    if (!category) {
+      throw new NotFoundException('category not found');
+    }
+
+    await this.categoryRepository.remove(category);
+
+    return 'Category deleted';
+  }
 }

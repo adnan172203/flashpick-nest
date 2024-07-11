@@ -158,4 +158,33 @@ describe('CategoriesService', () => {
       });
     });
   });
+
+  describe('delete Product', () => {
+    it('should be defined', async () => {
+      expect(service.deleteCategory).toBeDefined();
+    });
+
+    describe('when pass id', () => {
+      it('should delete the product', async () => {
+        const newCategory = new Category();
+        newCategory.id = '1';
+        newCategory.name = 'Mock Category';
+
+        mockRepository.findOneBy.mockReturnValue(newCategory);
+
+        await service.deleteCategory('1');
+
+        expect(mockRepository.remove).toHaveBeenCalledWith(newCategory);
+      });
+    });
+    describe('otherwise', () => {
+      it('should throw NotFoundException for non-existing product', async () => {
+        mockRepository.findOneBy.mockReturnValue(null);
+
+        await expect(service.deleteCategory('456')).rejects.toThrow(
+          NotFoundException
+        );
+      });
+    });
+  });
 });
