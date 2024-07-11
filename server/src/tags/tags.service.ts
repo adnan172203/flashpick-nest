@@ -11,8 +11,8 @@ export class TagsService {
     @InjectRepository(Tag)
     private readonly tagsRepository: Repository<Tag>
   ) {}
-  createTags({ ...tags }: CreateTagDto) {
-    return this.tagsRepository.save(tags);
+  createTags({ ...tag }: CreateTagDto) {
+    return this.tagsRepository.save(tag);
   }
 
   async findAllTags() {
@@ -31,8 +31,27 @@ export class TagsService {
     return tag;
   }
 
-  update(id: number, updateTagDto: UpdateTagDto) {
-    return `This action updates a #${id} tag`;
+  async updateTag(id: string, { ...tag }) {
+    const existingTag = await this.tagsRepository.findOne({
+      where: { id },
+    });
+
+    if (!existingTag) {
+      throw new NotFoundException('Tag not found');
+    }
+
+    const preloadedTag = await this.tagsRepository.preload({
+      id,
+      ...tag,
+    });
+
+    if (!preloadedTag) {
+      throw new NotFoundException('Tag not found');
+    }
+
+    this.tagsRepository.save(preloadedTag);
+
+    return 'Tag updated';
   }
 
   remove(id: number) {

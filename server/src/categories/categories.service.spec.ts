@@ -130,8 +130,8 @@ describe('CategoriesService', () => {
   });
 
   describe('update Category', () => {
-    describe('when update the product id with params', () => {
-      it('should update the product', async () => {
+    describe('when update the category id with params', () => {
+      it('should update the category', async () => {
         const newCategory = new Category();
         newCategory.id = '1';
         newCategory.name = 'Mock Category';

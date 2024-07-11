@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Put,
 } from '@nestjs/common';
 import { TagsService } from './tags.service';
 import { CreateTagDto } from './dto/create-tag.dto';
@@ -30,9 +31,9 @@ export class TagsController {
     return this.tagsService.findTagById(id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateTagDto: UpdateTagDto) {
-    return this.tagsService.update(+id, updateTagDto);
+    return this.tagsService.updateTag(id, updateTagDto);
   }
 
   @Delete(':id')

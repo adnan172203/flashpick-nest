@@ -116,4 +116,31 @@ describe('TagsService', () => {
       });
     });
   });
+
+  describe('update Tag', () => {
+    describe('when update the tag id with params', () => {
+      it('should update the tag', async () => {
+        const newTag = new Tag();
+        newTag.id = '1';
+        newTag.name = 'Mock Tag';
+
+        mockRepository.findOne.mockReturnValue(newTag);
+        mockRepository.preload.mockResolvedValue(newTag);
+
+        const updatedTag = { name: 'Updated Name' };
+
+        const savedTag = await service.updateTag('1', updatedTag);
+
+        expect(savedTag).toBeDefined();
+      });
+    });
+    describe('otherwise', () => {
+      it('should throw a NotFoundException if the category is not found', async () => {
+        mockRepository.findOne.mockReturnValue(null);
+        await expect(service.updateTag('456', {})).rejects.toThrow(
+          NotFoundException
+        );
+      });
+    });
+  });
 });
