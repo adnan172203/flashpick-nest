@@ -12,6 +12,7 @@ import {
 import { OrderItem } from '../../order/entities/order-item.entity';
 import { ProductImageGallery } from './product-image-gallery-entity';
 import { Category } from '../../categories/entities/category.entity';
+import { Tag } from '../../tags/entities/tag.entity';
 
 @Entity('products')
 export class Product {
@@ -60,6 +61,10 @@ export class Product {
   @ManyToMany(() => Category, (category) => category.products)
   @JoinTable({ name: 'product_to_category' })
   categories: Category[];
+
+  @ManyToMany(() => Tag, (tag) => tag.products)
+  @JoinTable({ name: 'product_to_tag' })
+  tags: Tag[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;

@@ -7,6 +7,7 @@ import { User } from './user/entities/user.entity';
 import { ProductModule } from './product/product.module';
 import { OrderModule } from './order/order.module';
 import { CategoriesModule } from './categories/categories.module';
+import { TagsModule } from './tags/tags.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { CategoriesModule } from './categories/categories.module';
     ProductModule,
     OrderModule,
     CategoriesModule,
+    TagsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
