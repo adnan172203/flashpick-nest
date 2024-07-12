@@ -159,13 +159,13 @@ describe('CategoriesService', () => {
     });
   });
 
-  describe('delete Product', () => {
+  describe('delete category', () => {
     it('should be defined', async () => {
       expect(service.deleteCategory).toBeDefined();
     });
 
     describe('when pass id', () => {
-      it('should delete the product', async () => {
+      it('should delete the category', async () => {
         const newCategory = new Category();
         newCategory.id = '1';
         newCategory.name = 'Mock Category';
@@ -178,7 +178,7 @@ describe('CategoriesService', () => {
       });
     });
     describe('otherwise', () => {
-      it('should throw NotFoundException for non-existing product', async () => {
+      it('should throw NotFoundException for non-existing category', async () => {
         mockRepository.findOneBy.mockReturnValue(null);
 
         await expect(service.deleteCategory('456')).rejects.toThrow(

@@ -143,4 +143,33 @@ describe('TagsService', () => {
       });
     });
   });
+
+  describe('Delete Tag', () => {
+    it('should be defined', async () => {
+      expect(service.deleteTag).toBeDefined();
+    });
+
+    describe('when delete the tag id', () => {
+      it('should delete the tag', async () => {
+        const newTag = new Tag();
+        newTag.id = '1';
+        newTag.name = 'Mock Tag';
+
+        mockRepository.findOneBy.mockReturnValue(newTag);
+
+        await service.deleteTag('1');
+
+        expect(mockRepository.remove).toHaveBeenCalledWith(newTag);
+      });
+    });
+    describe('otherwise', () => {
+      it('should throw NotFoundException for non-existing tag', async () => {
+        mockRepository.findOneBy.mockReturnValue(null);
+
+        await expect(service.deleteTag('456')).rejects.toThrow(
+          NotFoundException
+        );
+      });
+    });
+  });
 });

@@ -54,7 +54,15 @@ export class TagsService {
     return 'Tag updated';
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} tag`;
+  async deleteTag(id: string) {
+    const tag = await this.tagsRepository.findOneBy({ id });
+
+    if (!tag) {
+      throw new NotFoundException('tag not found');
+    }
+
+    await this.tagsRepository.remove(tag);
+
+    return 'Tag Deleted';
   }
 }

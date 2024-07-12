@@ -38,6 +38,6 @@ export class TagsController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.tagsService.remove(+id);
+    return this.tagsService.deleteTag(id);
   }
 }
