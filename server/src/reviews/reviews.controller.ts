@@ -22,7 +22,7 @@ export class ReviewsController {
 
   @Get()
   findAll() {
-    return this.reviewsService.findAll();
+    return this.reviewsService.findAllReviews();
   }
 
   @Get(':id')

@@ -46,8 +46,8 @@ export class ReviewsService {
     return this.reviewRepository.save(review);
   }
 
-  findAll() {
-    return `This action returns all reviews`;
+  findAllReviews() {
+    return this.reviewRepository.find();
   }
 
   findOne(id: number) {

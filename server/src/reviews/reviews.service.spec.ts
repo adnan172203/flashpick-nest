@@ -92,4 +92,28 @@ describe('ReviewsService', () => {
       });
     });
   });
+
+  describe('Get all reviews', () => {
+    it('should be defined', () => {
+      expect(service.findAllReviews).toBeDefined();
+    });
+
+    describe('when request', () => {
+      it('should return all reviews', async () => {
+        mockRepository.find.mockReturnValue(mockReview);
+
+        const result = await service.findAllReviews();
+
+        expect(result).toEqual(mockReview);
+      });
+
+      it('should return an empty array if no reviews are found', async () => {
+        mockRepository.find.mockReturnValue([]);
+
+        const result = await service.findAllReviews();
+
+        expect(result).toEqual([]);
+      });
+    });
+  });
 });
