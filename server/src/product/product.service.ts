@@ -90,7 +90,7 @@ export class ProductService {
 
   async getAllProducts() {
     return this.productRepository.find({
-      relations: ['images', 'categories'],
+      relations: ['images', 'categories', 'reviews'],
     });
   }
 

@@ -13,6 +13,7 @@ import { OrderItem } from '../../order/entities/order-item.entity';
 import { ProductImageGallery } from './product-image-gallery-entity';
 import { Category } from '../../categories/entities/category.entity';
 import { Tag } from '../../tags/entities/tag.entity';
+import { Review } from '../../reviews/entities/review.entity';
 
 @Entity('products')
 export class Product {
@@ -57,6 +58,9 @@ export class Product {
 
   @OneToMany(() => OrderItem, (orderItem) => orderItem.productId)
   orderItems: OrderItem[];
+
+  @OneToMany(() => Review, (review) => review.product)
+  reviews: Review[];
 
   @ManyToMany(() => Category, (category) => category.products)
   @JoinTable({ name: 'product_to_category' })

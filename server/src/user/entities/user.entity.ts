@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 
 import { Order } from '../../order/entities/order.entity';
+import { Review } from '../../reviews/entities/review.entity';
 
 export enum UserRole {
   ADMIN = 'admin',
@@ -42,6 +43,9 @@ export class User {
 
   @OneToMany(() => Order, (order) => order.userId)
   orders: Order[];
+
+  @OneToMany(() => Review, (review) => review.user)
+  reviews: Review[];
 
   @CreateDateColumn()
   createdAt: Date;
