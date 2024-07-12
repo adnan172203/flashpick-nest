@@ -27,7 +27,7 @@ export class ReviewsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.reviewsService.findOne(+id);
+    return this.reviewsService.findReviewById(id);
   }
 
   @Patch(':id')

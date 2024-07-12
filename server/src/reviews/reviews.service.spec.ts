@@ -4,6 +4,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Review } from './entities/review.entity';
 import { Product } from '../product/entities/product.entity';
 import { User } from '../user/entities/user.entity';
+import { NotFoundException } from '@nestjs/common';
 
 const mockRepository = {
   create: jest.fn(),
@@ -81,14 +82,14 @@ describe('ReviewsService', () => {
 
   describe('Create Review', () => {
     describe('when pass review params', () => {
-      it('should create a new category', async () => {
+      it('should create a new review', async () => {
         mockRepository.findOne.mockResolvedValue(mockUser);
 
         mockRepository.save.mockReturnValue(mockReview);
 
-        const savedCategory = await service.createReview(mockReview);
+        const savedReview = await service.createReview(mockReview);
 
-        expect(savedCategory).toBe(mockReview);
+        expect(savedReview).toBe(mockReview);
       });
     });
   });
@@ -113,6 +114,43 @@ describe('ReviewsService', () => {
         const result = await service.findAllReviews();
 
         expect(result).toEqual([]);
+      });
+    });
+  });
+
+  describe('Get review by id', () => {
+    it('should be defined', () => {
+      expect(service.findReviewById).toBeDefined();
+    });
+
+    describe('when request with id', () => {
+      it('should fetch the specific review', async () => {
+        const expectedReview = new Review();
+        expectedReview.id = '1';
+        expectedReview.comment = 'Mock Review';
+
+        mockRepository.findOne.mockReturnValue(expectedReview);
+
+        const result = await service.findReviewById('1');
+
+        expect(result).toEqual(expectedReview);
+      });
+    });
+    describe('when review does not exist', () => {
+      it('should throw a NotFoundException', async () => {
+        const reviewId = '1';
+
+        // mockRepository.findOne.mockResolvedValue(undefined);
+        mockRepository.findOne.mockRejectedValue(new NotFoundException());
+
+        await expect(service.findReviewById(reviewId)).rejects.toThrow(
+          NotFoundException
+        );
+
+        expect(mockRepository.findOne).toHaveBeenCalledWith({
+          where: { id: reviewId },
+          relations: ['products'],
+        });
       });
     });
   });
