@@ -53,7 +53,7 @@ export class ReviewsService {
   findReviewById(id: string) {
     const review = this.reviewRepository.findOne({
       where: { id },
-      relations: ['products'],
+      relations: ['product'],
     });
 
     if (!review) {
@@ -63,8 +63,46 @@ export class ReviewsService {
     return review;
   }
 
-  update(id: number, updateReviewDto: UpdateReviewDto) {
-    return `This action updates a #${id} review`;
+  async updateReview(id: string, updateReviewDto: UpdateReviewDto) {
+    const { userId, productId, rating, comment } = updateReviewDto;
+
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const product = await this.productRepository.findOne({
+      where: { id: productId },
+    });
+
+    if (!product) {
+      throw new NotFoundException('Product not found');
+    }
+
+    const existingReview = await this.reviewRepository.findOne({
+      where: { id },
+    });
+
+    if (existingReview.id !== id) {
+      throw new NotFoundException('Review not found');
+    }
+
+    const preloadedReview = await this.reviewRepository.preload({
+      id,
+      user,
+      product,
+      rating,
+      comment,
+    });
+
+    if (!preloadedReview) {
+      throw new NotFoundException('Review not found');
+    }
+
+    this.reviewRepository.save(preloadedReview);
+
+    return 'Review updated';
   }
 
   remove(id: number) {

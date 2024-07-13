@@ -149,8 +149,40 @@ describe('ReviewsService', () => {
 
         expect(mockRepository.findOne).toHaveBeenCalledWith({
           where: { id: reviewId },
-          relations: ['products'],
+          relations: ['product'],
         });
+      });
+    });
+  });
+
+  describe('update Review', () => {
+    describe('when update the review id with params', () => {
+      it('should update the category', async () => {
+        const expectedReview = new Review();
+        expectedReview.id = '1';
+        expectedReview.comment = 'Mock Review';
+
+        mockRepository.findOne.mockReturnValue(expectedReview);
+        mockRepository.preload.mockResolvedValue(expectedReview);
+
+        const updatedReview = {
+          productId: '1',
+          userId: '2',
+          comment: 'this is review',
+          rating: 5,
+        };
+
+        const savedCategory = await service.updateReview('1', updatedReview);
+
+        expect(savedCategory).toBeDefined();
+      });
+    });
+    describe('otherwise', () => {
+      it('should throw a NotFoundException if the revie is not found', async () => {
+        mockRepository.findOne.mockReturnValue(null);
+        await expect(service.updateReview('456', {})).rejects.toThrow(
+          NotFoundException
+        );
       });
     });
   });
