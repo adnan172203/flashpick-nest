@@ -105,7 +105,15 @@ export class ReviewsService {
     return 'Review updated';
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} review`;
+  async deleteReviews(id: string) {
+    const review = await this.reviewRepository.findOneBy({ id });
+
+    if (!review) {
+      throw new NotFoundException('review not found');
+    }
+
+    await this.reviewRepository.remove(review);
+
+    return 'Review deleted';
   }
 }

@@ -186,4 +186,32 @@ describe('ReviewsService', () => {
       });
     });
   });
+
+  describe('delete category', () => {
+    it('should be defined', async () => {
+      expect(service.deleteReviews).toBeDefined();
+    });
+
+    describe('when pass id', () => {
+      it('should delete the review', async () => {
+        const expectedReview = new Review();
+        expectedReview.id = '1';
+
+        mockRepository.findOneBy.mockReturnValue(expectedReview);
+
+        await service.deleteReviews('1');
+
+        expect(mockRepository.remove).toHaveBeenCalledWith(expectedReview);
+      });
+    });
+    describe('otherwise', () => {
+      it('should throw NotFoundException for non-existing category', async () => {
+        mockRepository.findOneBy.mockReturnValue(null);
+
+        await expect(service.deleteReviews('456')).rejects.toThrow(
+          NotFoundException
+        );
+      });
+    });
+  });
 });
