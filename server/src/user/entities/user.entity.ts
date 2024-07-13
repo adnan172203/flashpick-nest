@@ -9,6 +9,7 @@ import {
 
 import { Order } from '../../order/entities/order.entity';
 import { Review } from '../../reviews/entities/review.entity';
+import { Cart } from 'src/carts/entities/cart.entity';
 
 export enum UserRole {
   ADMIN = 'admin',
@@ -46,6 +47,9 @@ export class User {
 
   @OneToMany(() => Review, (review) => review.user)
   reviews: Review[];
+
+  @OneToMany(() => Cart, (cart) => cart.user)
+  carts: Cart[];
 
   @CreateDateColumn()
   createdAt: Date;
