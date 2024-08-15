@@ -33,13 +33,11 @@ export class CartsController {
     return this.cartsService.getOrCreateCart(userId);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCartDto: UpdateCartDto) {
-    return this.cartsService.update(+id, updateCartDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.cartsService.remove(+id);
+  @Delete(':userId/items/:cartItemId')
+  removeItem(
+    @Param('userId') userId: string,
+    @Param('cartItemId') cartItemId: string
+  ) {
+    return this.cartsService.removeItemFromCart(userId, cartItemId);
   }
 }

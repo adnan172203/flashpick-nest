@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCartDto } from './dto/create-cart.dto';
-import { UpdateCartDto } from './dto/update-cart.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from '../product/entities/product.entity';
 import { Repository } from 'typeorm';
@@ -75,11 +74,34 @@ export class CartsService {
     });
   }
 
-  update(id: number, updateCartDto: UpdateCartDto) {
-    return `This action updates a #${id} cart`;
-  }
+  async removeItemFromCart(
+    userId: string,
+    cartItemId: string
+  ): Promise<Cart | string> {
+    const cart = await this.getOrCreateCart(userId);
 
-  remove(id: number) {
-    return `This action removes a #${id} cart`;
+    const deletedItem = await this.cartItemsRepository.delete(cartItemId);
+
+    if (!deletedItem.affected) {
+      return 'Cart item not found';
+    }
+
+    // Check if the cart is now empty
+    const remainingItems = await this.cartItemsRepository.find({
+      where: { cart: { id: cart.id } },
+    });
+
+    if (remainingItems.length === 0) {
+      // If no items are left, remove the cart itself
+      await this.cartsRepository.remove(cart);
+
+      return 'Cart removed successfully';
+    } else {
+      // Otherwise, update the cart's updated_at timestamp
+      cart.updatedAt = new Date();
+      await this.cartsRepository.save(cart);
+
+      return cart;
+    }
   }
 }

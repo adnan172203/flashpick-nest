@@ -207,4 +207,66 @@ describe('CartsService', () => {
       });
     });
   });
+
+  describe('removeItemFromCart', () => {
+    it('should remove item from cart and return updated cart', async () => {
+      const mockCart = {
+        id: '1',
+        user: { id: 'user1' },
+        cartItems: [],
+        updatedAt: new Date(),
+      };
+      const mockCartItem = { id: 'item1', cart: mockCart };
+
+      jest
+        .spyOn(service, 'getOrCreateCart')
+        .mockResolvedValue(mockCart as Cart);
+      jest
+        .spyOn(cartItemsRepository, 'delete')
+        .mockResolvedValue({ affected: 1, raw: [] } as any);
+      jest
+        .spyOn(cartItemsRepository, 'find')
+        .mockResolvedValue([{ id: 'item2' }] as CartItem[]);
+      jest.spyOn(cartsRepository, 'save').mockResolvedValue(mockCart as Cart);
+
+      const result = await service.removeItemFromCart('user1', 'item1');
+
+      expect(result).toEqual(mockCart);
+      expect(cartItemsRepository.delete).toHaveBeenCalledWith('item1');
+      expect(cartsRepository.save).toHaveBeenCalled();
+    });
+
+    it('should return "Cart item not found" if item does not exist', async () => {
+      const mockCart = { id: '1', user: { id: 'user1' }, cartItems: [] };
+
+      jest
+        .spyOn(service, 'getOrCreateCart')
+        .mockResolvedValue(mockCart as Cart);
+      jest
+        .spyOn(cartItemsRepository, 'delete')
+        .mockResolvedValue({ affected: 0, raw: [] });
+
+      const result = await service.removeItemFromCart('user1', 'nonexistent');
+
+      expect(result).toBe('Cart item not found');
+    });
+
+    it('should remove the entire cart if last item is removed', async () => {
+      const mockCart = { id: '1', user: { id: 'user1' }, cartItems: [] };
+
+      jest
+        .spyOn(service, 'getOrCreateCart')
+        .mockResolvedValue(mockCart as Cart);
+      jest
+        .spyOn(cartItemsRepository, 'delete')
+        .mockResolvedValue({ affected: 1, raw: [] });
+      jest.spyOn(cartItemsRepository, 'find').mockResolvedValue([]);
+      jest.spyOn(cartsRepository, 'remove').mockResolvedValue(mockCart as Cart);
+
+      const result = await service.removeItemFromCart('user1', 'lastItem');
+
+      expect(result).toBe('Cart removed successfully');
+      expect(cartsRepository.remove).toHaveBeenCalledWith(mockCart);
+    });
+  });
 });
