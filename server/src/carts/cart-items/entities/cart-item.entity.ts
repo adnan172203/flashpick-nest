@@ -1,5 +1,5 @@
-import { Cart } from 'src/carts/entities/cart.entity';
-import { Product } from 'src/product/entities/product.entity';
+import { Cart } from '../../entities/cart.entity';
+import { Product } from '../../../product/entities/product.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -11,11 +11,17 @@ import {
 
 @Entity()
 export class CartItem {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   quantity: number;
+
+  @Column('decimal')
+  price: number;
+
+  @Column('decimal')
+  total: number;
 
   @ManyToOne(() => Cart, (cart) => cart.cartItems, { onDelete: 'CASCADE' })
   cart: Cart;
@@ -24,6 +30,7 @@ export class CartItem {
     onDelete: 'CASCADE',
   })
   product: Product;
+
   @CreateDateColumn()
   createdAt: Date;
 

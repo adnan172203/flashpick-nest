@@ -1,4 +1,4 @@
-import { User } from 'src/user/entities/user.entity';
+import { User } from '../../user/entities/user.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -11,8 +11,8 @@ import { CartItem } from '../cart-items/entities/cart-item.entity';
 
 @Entity()
 export class Cart {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @ManyToOne(() => User, (user) => user.carts)
   user: User;

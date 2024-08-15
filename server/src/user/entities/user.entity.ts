@@ -9,7 +9,7 @@ import {
 
 import { Order } from '../../order/entities/order.entity';
 import { Review } from '../../reviews/entities/review.entity';
-import { Cart } from 'src/carts/entities/cart.entity';
+import { Cart } from '../../carts/entities/cart.entity';
 
 export enum UserRole {
   ADMIN = 'admin',

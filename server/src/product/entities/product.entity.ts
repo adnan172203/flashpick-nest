@@ -14,7 +14,7 @@ import { ProductImageGallery } from './product-image-gallery-entity';
 import { Category } from '../../categories/entities/category.entity';
 import { Tag } from '../../tags/entities/tag.entity';
 import { Review } from '../../reviews/entities/review.entity';
-import { CartItem } from 'src/carts/cart-items/entities/cart-item.entity';
+import { CartItem } from '../../carts/cart-items/entities/cart-item.entity';
 
 @Entity('products')
 export class Product {
