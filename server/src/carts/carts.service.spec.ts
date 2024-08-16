@@ -269,4 +269,58 @@ describe('CartsService', () => {
       expect(cartsRepository.remove).toHaveBeenCalledWith(mockCart);
     });
   });
+
+  describe('clearCart', () => {
+    it('should clear the cart and return success message', async () => {
+      const mockCart = { id: '1', user: { id: 'user1' }, cartItems: [] };
+      jest
+        .spyOn(service, 'getOrCreateCart')
+        .mockResolvedValue(mockCart as Cart);
+      jest
+        .spyOn(cartItemsRepository, 'delete')
+        .mockResolvedValue({ affected: 2, raw: [] });
+      jest.spyOn(cartsRepository, 'remove').mockResolvedValue(mockCart as Cart);
+
+      const result = await service.clearCart('user1');
+
+      expect(result).toBe('Cart cleared successfully');
+      expect(service.getOrCreateCart).toHaveBeenCalledWith('user1');
+      expect(cartItemsRepository.delete).toHaveBeenCalledWith({
+        cart: mockCart,
+      });
+      expect(cartsRepository.remove).toHaveBeenCalledWith(mockCart);
+    });
+
+    it('should handle clearing an empty cart', async () => {
+      const mockEmptyCart = { id: '2', user: { id: 'user2' }, cartItems: [] };
+      jest
+        .spyOn(service, 'getOrCreateCart')
+        .mockResolvedValue(mockEmptyCart as Cart);
+      jest
+        .spyOn(cartItemsRepository, 'delete')
+        .mockResolvedValue({ affected: 0, raw: [] });
+      jest
+        .spyOn(cartsRepository, 'remove')
+        .mockResolvedValue(mockEmptyCart as Cart);
+
+      const result = await service.clearCart('user2');
+
+      expect(result).toBe('Cart cleared successfully');
+      expect(service.getOrCreateCart).toHaveBeenCalledWith('user2');
+      expect(cartItemsRepository.delete).toHaveBeenCalledWith({
+        cart: mockEmptyCart,
+      });
+      expect(cartsRepository.remove).toHaveBeenCalledWith(mockEmptyCart);
+    });
+
+    it('should handle errors when clearing the cart', async () => {
+      jest
+        .spyOn(service, 'getOrCreateCart')
+        .mockRejectedValue(new Error('Database error'));
+
+      await expect(service.clearCart('user3')).rejects.toThrow(
+        'Database error'
+      );
+    });
+  });
 });

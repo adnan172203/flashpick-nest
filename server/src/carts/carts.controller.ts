@@ -34,10 +34,14 @@ export class CartsController {
   }
 
   @Delete(':userId/items/:cartItemId')
-  removeItem(
+  removeCartItem(
     @Param('userId') userId: string,
     @Param('cartItemId') cartItemId: string
   ) {
     return this.cartsService.removeItemFromCart(userId, cartItemId);
+  }
+  @Delete(':userId')
+  removeCart(@Param('userId') userId: string) {
+    return this.cartsService.clearCart(userId);
   }
 }

@@ -104,4 +104,16 @@ export class CartsService {
       return cart;
     }
   }
+
+  async clearCart(userId: string): Promise<void | string> {
+    const cart = await this.getOrCreateCart(userId);
+
+    // Delete all cart items
+    await this.cartItemsRepository.delete({ cart });
+
+    // Delete the cart itself
+    await this.cartsRepository.remove(cart);
+
+    return 'Cart cleared successfully';
+  }
 }
