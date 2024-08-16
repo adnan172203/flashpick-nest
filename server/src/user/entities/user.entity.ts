@@ -10,6 +10,7 @@ import {
 import { Order } from '../../order/entities/order.entity';
 import { Review } from '../../reviews/entities/review.entity';
 import { Cart } from '../../carts/entities/cart.entity';
+import { SocialLink } from '../../social-links/entities/social-link.entity';
 
 export enum UserRole {
   ADMIN = 'admin',
@@ -42,11 +43,14 @@ export class User {
   @Column()
   password: string;
 
-  @OneToMany(() => Order, (order) => order.userId)
-  orders: Order[];
+  @OneToMany(() => SocialLink, (social) => social.user)
+  socialLinks: SocialLink[];
 
   @OneToMany(() => Review, (review) => review.user)
   reviews: Review[];
+
+  @OneToMany(() => Order, (order) => order.userId)
+  orders: Order[];
 
   @OneToMany(() => Cart, (cart) => cart.user)
   carts: Cart[];

@@ -1,4 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from '../../user/entities/user.entity';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('social_links')
 export class SocialLink {
@@ -9,8 +17,17 @@ export class SocialLink {
   userId: string;
 
   @Column()
-  platform: string;
+  platformName: string;
 
   @Column()
   url: string;
+
+  @ManyToOne(() => User, (user) => user.socialLinks)
+  user: User;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }
