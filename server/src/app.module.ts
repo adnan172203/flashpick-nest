@@ -10,6 +10,7 @@ import { CategoriesModule } from './categories/categories.module';
 import { TagsModule } from './tags/tags.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { CartsModule } from './carts/carts.module';
+import { SocialLinksModule } from './social-links/social-links.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { CartsModule } from './carts/carts.module';
     TagsModule,
     ReviewsModule,
     CartsModule,
+    SocialLinksModule,
   ],
   controllers: [AppController],
   providers: [AppService],
