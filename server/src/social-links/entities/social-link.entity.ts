@@ -6,9 +6,11 @@ import {
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
+  Unique,
 } from 'typeorm';
 
 @Entity('social_links')
+@Unique(['userId', 'url'])
 export class SocialLink {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -19,6 +21,7 @@ export class SocialLink {
   @Column()
   platformName: string;
 
+  // @Column({ unique: true })
   @Column()
   url: string;
 

@@ -17,29 +17,29 @@ export class SocialLinksController {
 
   @Post('create')
   create(@Body() createSocialLinkDto: CreateSocialLinkDto) {
-    return this.socialLinksService.createSocialLink(createSocialLinkDto);
+    return this.socialLinksService.createSocialLinks(createSocialLinkDto);
   }
 
-  @Get()
-  findAll() {
-    return this.socialLinksService.findAll();
-  }
+  // @Get()
+  // findAll() {
+  //   return this.socialLinksService.findAll();
+  // }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.socialLinksService.findOne(+id);
-  }
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.socialLinksService.findOne(+id);
+  // }
 
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateSocialLinkDto: UpdateSocialLinkDto
-  ) {
-    return this.socialLinksService.update(+id, updateSocialLinkDto);
-  }
+  // @Patch(':id')
+  // update(
+  //   @Param('id') id: string,
+  //   @Body() updateSocialLinkDto: UpdateSocialLinkDto
+  // ) {
+  //   return this.socialLinksService.update(+id, updateSocialLinkDto);
+  // }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.socialLinksService.remove(+id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.socialLinksService.remove(+id);
+  // }
 }

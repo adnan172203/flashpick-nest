@@ -1,5 +1,7 @@
 export class CreateSocialLinkDto {
-  userId: string;
-  platformName: string;
-  url: string;
+  socialLinks: {
+    userId: string;
+    platformName: string;
+    url: string;
+  }[];
 }
