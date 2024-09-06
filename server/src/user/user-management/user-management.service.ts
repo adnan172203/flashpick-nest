@@ -14,4 +14,11 @@ export class UserManagementService {
       relations: ['socialLinks'],
     });
   }
+
+  async findUserById(id: string) {
+    return await this.userRepository.findOne({
+      where: { id },
+      relations: ['socialLinks'],
+    });
+  }
 }
