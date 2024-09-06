@@ -6,7 +6,6 @@
 export class UpdateSocialLinkDto {
   socialLinks: {
     userId: string;
-
     url: string;
   }[];
 }

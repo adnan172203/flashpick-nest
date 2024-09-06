@@ -12,7 +12,11 @@ import { UpdateSocialLinkDto } from './dto/update-social-link.dto';
 
 @Injectable()
 export class SocialLinksService {
-  constructor(private dataSource: DataSource) {}
+  constructor(
+    private dataSource: DataSource,
+    @InjectRepository(SocialLink)
+    private readonly socialLinkRepository: Repository<SocialLink>
+  ) {}
 
   async createSocialLinks(createSocialLinkDto: CreateSocialLinkDto) {
     const { socialLinks } = createSocialLinkDto;
@@ -123,5 +127,16 @@ export class SocialLinksService {
       }
       throw error;
     }
+  }
+
+  async deleteSocialLink(id: string) {
+    const socialLink = await this.socialLinkRepository.findOneBy({ id });
+
+    if (!socialLink) {
+      throw new NotFoundException('Social link not found');
+    }
+    await this.socialLinkRepository.remove(socialLink);
+
+    return 'Social link deleted successfully';
   }
 }

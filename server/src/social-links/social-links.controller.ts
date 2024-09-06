@@ -39,8 +39,8 @@ export class SocialLinksController {
     return this.socialLinksService.updateSocialLink(id, updateSocialLinkDto);
   }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.socialLinksService.remove(+id);
-  // }
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.socialLinksService.deleteSocialLink(id);
+  }
 }

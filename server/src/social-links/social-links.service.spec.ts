@@ -266,4 +266,50 @@ describe('SocialLinksService', () => {
       expect(transactionalEntityManager.save).toHaveBeenCalledTimes(1);
     });
   });
+
+  describe('deleteSocialLink', () => {
+    it('should delete a social link successfully', async () => {
+      const mockSocialLink = {
+        id: '123',
+        userId: 'user1',
+        platformName: 'Facebook',
+        url: 'https://facebook.com/user1',
+      };
+
+      mockRepository.findOneBy.mockResolvedValue(mockSocialLink);
+      mockRepository.remove.mockResolvedValue(undefined);
+
+      const result = await service.deleteSocialLink('link1');
+
+      expect(mockRepository.findOneBy).toHaveBeenCalledWith({ id: 'link1' });
+      expect(mockRepository.remove).toHaveBeenCalledWith(mockSocialLink);
+      expect(result).toBe('Social link deleted successfully');
+    });
+
+    it('should throw NotFoundException for non-existing product', async () => {
+      mockRepository.findOneBy.mockReturnValue(null);
+
+      await expect(service.deleteSocialLink('456')).rejects.toThrow(
+        NotFoundException
+      );
+    });
+
+    it('should handle errors during deletion', async () => {
+      const mockSocialLink = {
+        id: 'link1',
+        userId: 'user1',
+        platformName: 'Facebook',
+        url: 'https://facebook.com/user1',
+      };
+
+      mockRepository.findOneBy.mockResolvedValue(mockSocialLink);
+      mockRepository.remove.mockRejectedValue(new Error('Database error'));
+
+      await expect(service.deleteSocialLink('link1')).rejects.toThrow(
+        'Database error'
+      );
+      expect(mockRepository.findOneBy).toHaveBeenCalledWith({ id: 'link1' });
+      expect(mockRepository.remove).toHaveBeenCalledWith(mockSocialLink);
+    });
+  });
 });
