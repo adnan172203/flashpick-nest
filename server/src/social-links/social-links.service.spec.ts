@@ -118,4 +118,152 @@ describe('SocialLinksService', () => {
       expect(transactionalEntityManager.save).toHaveBeenCalledTimes(2);
     });
   });
+
+  describe('updateSocialLink', () => {
+    it('should update social links successfully', async () => {
+      const updateSocialLinkDto = {
+        socialLinks: [
+          {
+            userId: 'user1',
+            url: 'https://facebook.com/updateduser1',
+          },
+          {
+            userId: 'user2',
+            url: 'https://twitter.com/updateduser2',
+          },
+        ],
+      };
+
+      const transactionalEntityManager = {
+        findOne: jest
+          .fn()
+          .mockResolvedValueOnce(mockUser1)
+          .mockResolvedValueOnce({
+            id: 'link1',
+            userId: 'user1',
+            url: 'https://facebook.com/user1',
+          })
+          .mockResolvedValueOnce(mockUser2)
+          .mockResolvedValueOnce({
+            id: 'link2',
+            userId: 'user2',
+            url: 'https://twitter.com/user2',
+          }),
+        save: jest
+          .fn()
+          .mockImplementation((entity, link) =>
+            Promise.resolve({ ...link, id: 'updatedLink' })
+          ),
+      };
+
+      (dataSource.transaction as jest.Mock).mockImplementation((cb) =>
+        cb(transactionalEntityManager)
+      );
+
+      const result = await service.updateSocialLink(
+        'link1',
+        updateSocialLinkDto
+      );
+      console.log(result);
+
+      expect(result).toHaveLength(2);
+
+      expect(result[0]).toEqual({
+        id: 'updatedLink',
+        url: 'https://facebook.com/updateduser1',
+      });
+      expect(result[1]).toEqual({
+        id: 'updatedLink',
+        userId: 'user2',
+        url: 'https://twitter.com/updateduser2',
+      });
+
+      expect(transactionalEntityManager.findOne).toHaveBeenCalledTimes(4);
+      expect(transactionalEntityManager.save).toHaveBeenCalledTimes(2);
+    });
+
+    it('should throw NotFoundException when user is not found', async () => {
+      const updateSocialLinkDto = {
+        socialLinks: [
+          {
+            userId: 'nonexistentUser',
+            url: 'https://facebook.com/updateduser',
+          },
+        ],
+      };
+
+      const transactionalEntityManager = {
+        findOne: jest.fn().mockResolvedValue(null),
+      };
+
+      (dataSource.transaction as jest.Mock).mockImplementation((cb) =>
+        cb(transactionalEntityManager)
+      );
+
+      await expect(
+        service.updateSocialLink('link1', updateSocialLinkDto)
+      ).rejects.toThrow(NotFoundException);
+      expect(transactionalEntityManager.findOne).toHaveBeenCalledTimes(1);
+    });
+
+    it('should throw NotFoundException when social link is not found', async () => {
+      const updateSocialLinkDto = {
+        socialLinks: [
+          {
+            userId: 'user1',
+            url: 'https://facebook.com/updateduser1',
+          },
+        ],
+      };
+
+      const transactionalEntityManager = {
+        findOne: jest
+          .fn()
+          .mockResolvedValueOnce(mockUser1)
+          .mockResolvedValueOnce(null),
+      };
+
+      (dataSource.transaction as jest.Mock).mockImplementation((cb) =>
+        cb(transactionalEntityManager)
+      );
+
+      await expect(
+        service.updateSocialLink('nonexistentLink', updateSocialLinkDto)
+      ).rejects.toThrow(NotFoundException);
+      expect(transactionalEntityManager.findOne).toHaveBeenCalledTimes(2);
+    });
+
+    it('should throw ConflictException when updating to an existing URL', async () => {
+      const updateSocialLinkDto = {
+        socialLinks: [
+          {
+            userId: 'user1',
+            url: 'https://facebook.com/existinguser',
+          },
+        ],
+      };
+
+      const transactionalEntityManager = {
+        findOne: jest
+          .fn()
+          .mockResolvedValueOnce(mockUser1)
+          .mockResolvedValueOnce({
+            id: 'link1',
+            userId: 'user1',
+            url: 'https://facebook.com/user1',
+          }),
+        save: jest.fn().mockRejectedValue({ code: '23505' }),
+      };
+
+      (dataSource.transaction as jest.Mock).mockImplementation((cb) =>
+        cb(transactionalEntityManager)
+      );
+
+      await expect(
+        service.updateSocialLink('link1', updateSocialLinkDto)
+      ).rejects.toThrow(ConflictException);
+      expect(transactionalEntityManager.findOne).toHaveBeenCalledTimes(2);
+      expect(transactionalEntityManager.save).toHaveBeenCalledTimes(1);
+    });
+  });
 });

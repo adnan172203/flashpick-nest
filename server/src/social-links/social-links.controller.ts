@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Put,
 } from '@nestjs/common';
 import { SocialLinksService } from './social-links.service';
 import { CreateSocialLinkDto } from './dto/create-social-link.dto';
@@ -30,13 +31,13 @@ export class SocialLinksController {
   //   return this.socialLinksService.findOne(+id);
   // }
 
-  // @Patch(':id')
-  // update(
-  //   @Param('id') id: string,
-  //   @Body() updateSocialLinkDto: UpdateSocialLinkDto
-  // ) {
-  //   return this.socialLinksService.update(+id, updateSocialLinkDto);
-  // }
+  @Put(':id')
+  update(
+    @Param('id') id: string,
+    @Body() updateSocialLinkDto: UpdateSocialLinkDto
+  ) {
+    return this.socialLinksService.updateSocialLink(id, updateSocialLinkDto);
+  }
 
   // @Delete(':id')
   // remove(@Param('id') id: string) {
