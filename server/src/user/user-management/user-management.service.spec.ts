@@ -3,6 +3,7 @@ import { UserManagementService } from './user-management.service';
 import { Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { User } from '../entities/user.entity';
+import { NotFoundException } from '@nestjs/common';
 
 const mockRepository = {
   create: jest.fn(),
@@ -113,6 +114,35 @@ describe('UserManagementService', () => {
       const result = await service.findUserById('nonexistent');
 
       expect(result).toBeNull();
+    });
+  });
+
+  describe('update User Information', () => {
+    describe('when provided new user information', () => {
+      it('should update the user information', async () => {
+        const newUser = new User();
+        newUser.id = '1';
+        newUser.name = 'Mock User';
+        newUser.email = 'Mock Description';
+        newUser.address = '123 Main St';
+
+        mockRepository.findOne.mockReturnValue(newUser);
+        mockRepository.update.mockResolvedValue(newUser);
+
+        const updatedUser = { name: 'Updated Name' };
+
+        const savedUser = await service.updateUser('1', updatedUser);
+
+        expect(savedUser.id).toBeDefined();
+      });
+    });
+    describe('otherwise', () => {
+      it('should throw a NotFoundException if the user is not found', async () => {
+        mockRepository.findOne.mockReturnValue(null);
+        await expect(service.updateUser('456', {})).rejects.toThrow(
+          NotFoundException
+        );
+      });
     });
   });
 });
