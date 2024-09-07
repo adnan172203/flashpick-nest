@@ -5,10 +5,12 @@ import {
   CreateDateColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
 } from 'typeorm';
 
 import { User } from '../../user/entities/user.entity';
 import { OrderItem } from './order-item.entity';
+import { ShippingAddress } from './shipping-address';
 @Entity()
 export class Order {
   create(create: any) {
@@ -38,6 +40,9 @@ export class Order {
     onDelete: 'CASCADE',
   })
   orderItems: OrderItem[];
+
+  @OneToOne(() => ShippingAddress, (shippingAddress) => shippingAddress.order)
+  shippingAddress: ShippingAddress;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
