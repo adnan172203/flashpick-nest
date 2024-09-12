@@ -5,15 +5,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Order } from './entities/order.entity';
 import { OrderItem } from './entities/order-item.entity';
 import { Product } from 'src/product/entities/product.entity';
-import { ShippingAddressService } from './shipping-address/shipping-address.service';
-import { ShippingAddressController } from './shipping-address/shipping-address.controller';
-import { ShippingAddress } from './entities/shipping-address';
+import { ShippingAddress } from './entities/shipping-address.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Order, OrderItem, Product, ShippingAddress]),
   ],
-  controllers: [OrderController, ShippingAddressController],
-  providers: [OrderService, ShippingAddressService],
+  controllers: [OrderController],
+  providers: [OrderService],
 })
 export class OrderModule {}

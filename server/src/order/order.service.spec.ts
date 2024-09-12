@@ -19,9 +19,19 @@ const mockRepository = {
 const mockOrder = {
   userId: '6ec3af70-207e-453f-84ac-69e0f4d0ce27',
   name: 'John Doe',
-  totalCost: '100.00',
+  totalPrice: '100.00',
   orderStatus: 'Pending',
   paymentMethod: 'Credit Card',
+  shippingAddress: {
+    firstName: 'john',
+    lastName: 'cena',
+    country: 'canada',
+    address: 'van couver',
+    city: 'van',
+    zipCode: '23',
+    phone: '12312313',
+    email: 'abc@gmail.com',
+  },
   orderItems: [
     {
       id: '5678',
@@ -52,9 +62,6 @@ const mockProduct = {
 
 describe('OrderService', () => {
   let service: OrderService;
-  let ordersRepository: Order;
-  let orderItemsRepository: OrderItem;
-  let productsRepository: Product;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -76,9 +83,6 @@ describe('OrderService', () => {
     }).compile();
 
     service = module.get<OrderService>(OrderService);
-    ordersRepository = module.get(getRepositoryToken(Order));
-    orderItemsRepository = module.get(getRepositoryToken(OrderItem));
-    productsRepository = module.get(getRepositoryToken(Product));
   });
 
   it('should be defined', () => {

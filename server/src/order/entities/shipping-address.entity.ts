@@ -12,9 +12,6 @@ export class ShippingAddress {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @OneToOne(() => Order, (order) => order.shippingAddress)
-  order: Order;
-
   @Column()
   firstName: string;
 
@@ -41,5 +38,4 @@ export class ShippingAddress {
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
-  save: any;
 }

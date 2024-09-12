@@ -10,10 +10,20 @@ interface CreateOrderParams {
   id?: string;
   userId: string;
   name: string;
-  totalCost: string;
+  totalPrice: string;
   orderStatus: string;
   paymentMethod: string;
   orderItems: OrderItemDTO[];
+  shippingAddress: {
+    firstName: string;
+    lastName: string;
+    country: string;
+    address: string;
+    city: string;
+    zipCode: string;
+    phone: string;
+    email: string;
+  };
 }
 
 @Injectable()
@@ -31,18 +41,20 @@ export class OrderService {
     id,
     userId,
     name,
-    totalCost,
+    totalPrice,
     orderStatus,
     paymentMethod,
     orderItems,
+    shippingAddress,
   }: CreateOrderParams) {
     const order = this.ordersRepository.create({
       id,
       userId,
       name,
-      totalCost,
+      totalPrice,
       orderStatus,
       paymentMethod,
+      shippingAddress,
     });
     const savedOrder = await this.ordersRepository.save(order);
 
@@ -58,7 +70,7 @@ export class OrderService {
 
   async getAllOrders() {
     return this.ordersRepository.find({
-      relations: ['orderItems'],
+      relations: ['orderItems', 'shippingAddress'],
     });
   }
 

@@ -6,11 +6,13 @@ import {
   ManyToOne,
   OneToMany,
   OneToOne,
+  JoinTable,
+  JoinColumn,
 } from 'typeorm';
 
 import { User } from '../../user/entities/user.entity';
 import { OrderItem } from './order-item.entity';
-import { ShippingAddress } from './shipping-address';
+import { ShippingAddress } from './shipping-address.entity';
 @Entity()
 export class Order {
   create(create: any) {
@@ -27,7 +29,7 @@ export class Order {
   name: string;
 
   @Column({ type: 'varchar' })
-  totalCost: string;
+  totalPrice: string;
 
   @Column({ type: 'varchar' })
   orderStatus: string;
@@ -41,7 +43,8 @@ export class Order {
   })
   orderItems: OrderItem[];
 
-  @OneToOne(() => ShippingAddress, (shippingAddress) => shippingAddress.order)
+  @OneToOne(() => ShippingAddress, { cascade: true, onDelete: 'CASCADE' })
+  @JoinColumn()
   shippingAddress: ShippingAddress;
 
   @CreateDateColumn({ type: 'timestamp' })

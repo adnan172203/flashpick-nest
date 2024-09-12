@@ -164,7 +164,6 @@ describe('SocialLinksService', () => {
         'link1',
         updateSocialLinkDto
       );
-      console.log(result);
 
       expect(result).toHaveLength(2);
 
