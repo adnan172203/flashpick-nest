@@ -11,11 +11,12 @@ import { Order } from '../../order/entities/order.entity';
 import { Review } from '../../reviews/entities/review.entity';
 import { Cart } from '../../carts/entities/cart.entity';
 import { SocialLink } from '../../social-links/entities/social-link.entity';
+import { Role } from '../user-management/enums/role.enum';
 
-export enum UserRole {
-  ADMIN = 'admin',
-  USER = 'user',
-}
+// export enum UserRole {
+//   ADMIN = 'admin',
+//   USER = 'user',
+// }
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
@@ -32,10 +33,10 @@ export class User {
 
   @Column({
     type: 'enum',
-    enum: UserRole,
-    default: UserRole.USER,
+    enum: Role,
+    default: Role.USER,
   })
-  role: UserRole;
+  role: Role;
 
   @Column()
   phoneNumber: string;

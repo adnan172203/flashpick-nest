@@ -9,6 +9,8 @@ import {
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { ProductDto, UpdateProductDto } from './dto/product.dto';
+import { Auth } from 'src/user/iam/authentication/decorators/auth.decorators';
+import { AuthType } from 'src/user/iam/authentication/enums/auth-type.enum';
 
 @Controller('product')
 export class ProductController {
@@ -18,7 +20,7 @@ export class ProductController {
   async create(@Body() product: ProductDto) {
     return this.productService.createProduct(product);
   }
-
+  @Auth(AuthType.None)
   @Get('')
   getAllProducts() {
     return this.productService.getAllProducts();

@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      JSON_TOKEN_KEY: 'myvariablevalue'
+      JSON_SECRET: 'myvariablevalue'
 
     steps:
       - uses: actions/checkout@v2

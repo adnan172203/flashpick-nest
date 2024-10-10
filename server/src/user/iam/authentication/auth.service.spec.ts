@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
-import { User } from '../entities/user.entity';
+import { User } from '../../entities/user.entity';
 import { HttpException } from '@nestjs/common';
 
 const mockRepository = {
