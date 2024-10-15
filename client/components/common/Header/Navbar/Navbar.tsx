@@ -2,7 +2,7 @@ import React from 'react';
 
 const Navbar = () => {
   return (
-    <div>
+    <>
       <div className='h-full flex justify-center md:justify-between items-center gap-5'>
         {/* <!-- logo  --> */}
         <div className='max-w-[121px]'>
@@ -24,7 +24,7 @@ const Navbar = () => {
                   viewBox='0 0 24 24'
                   fill='none'
                 >
-                  <g clip-path='url(#clip0_1_3350)'>
+                  <g clipPath='url(#clip0_1_3350)'>
                     <path
                       d='M16 18V20H5V18H16ZM21 11V13H3V11H21ZM19 4V6H8V4H19Z'
                       fill='currentColor'
@@ -661,16 +661,16 @@ const Navbar = () => {
                     <path
                       d='M9.58334 17.5001C13.9556 17.5001 17.5 13.9557 17.5 9.58341C17.5 5.21116 13.9556 1.66675 9.58334 1.66675C5.21108 1.66675 1.66667 5.21116 1.66667 9.58341C1.66667 13.9557 5.21108 17.5001 9.58334 17.5001Z'
                       stroke='currentColor'
-                      stroke-width='1.5'
-                      stroke-linecap='round'
-                      stroke-linejoin='round'
+                      strokeWidth='1.5'
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
                     ></path>
                     <path
                       d='M18.3333 18.3334L16.6667 16.6667'
                       stroke='currentColor'
-                      stroke-width='1.5'
-                      stroke-linecap='round'
-                      stroke-linejoin='round'
+                      strokeWidth='1.5'
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
                     ></path>
                   </svg>
                 </div>
@@ -700,7 +700,7 @@ const Navbar = () => {
                     cy='5.49992'
                     r='3.66667'
                     stroke='currentColor'
-                    stroke-width='1.5'
+                    strokeWidth='1.5'
                   ></circle>
                   <ellipse
                     opacity='0.5'
@@ -709,7 +709,7 @@ const Navbar = () => {
                     rx='6.41667'
                     ry='3.66667'
                     stroke='currentColor'
-                    stroke-width='1.5'
+                    strokeWidth='1.5'
                   ></ellipse>
                 </svg>
                 <h3 className='text-#464646 group-hover:text-#5B9982'>
@@ -734,15 +734,15 @@ const Navbar = () => {
                   <path
                     d='M11 5.04231C6.87513 0.756736 1.83331 3.91804 1.83331 8.37573C1.83331 12.8334 5.51779 15.2089 8.2149 17.335C9.16665 18.0853 10.0833 18.7917 11 18.7917'
                     stroke='currentColor'
-                    stroke-width='1.5'
-                    stroke-linecap='round'
+                    strokeWidth='1.5'
+                    strokeLinecap='round'
                   ></path>
                   <path
                     opacity='0.5'
                     d='M11 5.04231C15.1249 0.756736 20.1667 3.91804 20.1667 8.37573C20.1667 12.8334 16.4822 15.2089 13.7851 17.335C12.8333 18.0853 11.9167 18.7917 11 18.7917'
                     stroke='currentColor'
-                    stroke-width='1.5'
-                    stroke-linecap='round'
+                    strokeWidth='1.5'
+                    strokeLinecap='round'
                   ></path>
                 </svg>
                 <h3 className='text-#464646 group-hover:text-#5B9982'>
@@ -764,19 +764,19 @@ const Navbar = () => {
                     cy='6.49992'
                     r='3.66667'
                     stroke='currentColor'
-                    stroke-width='1.5'
+                    strokeWidth='1.5'
                   ></circle>
                   <path
                     opacity='0.5'
                     d='M17 17.0417C17 19.3199 17 21.1667 9.66665 21.1667C2.33331 21.1667 2.33331 19.3199 2.33331 17.0417C2.33331 14.7636 5.61656 12.9167 9.66665 12.9167C13.7167 12.9167 17 14.7636 17 17.0417Z'
                     stroke='currentColor'
-                    stroke-width='1.5'
+                    strokeWidth='1.5'
                   ></path>
                   <path
                     d='M19.75 10.1666H17.9166M17.9166 10.1666H16.0833M17.9166 10.1666L17.9166 8.33325M17.9166 10.1666L17.9166 11.9999'
                     stroke='currentColor'
-                    stroke-width='1.5'
-                    stroke-linecap='round'
+                    strokeWidth='1.5'
+                    strokeLinecap='round'
                   ></path>
                 </svg>
                 <h3 className='text-#464646 group-hover:text-#5B9982'>
@@ -796,7 +796,7 @@ const Navbar = () => {
                   <path
                     d='M3.71507 11.1935C4.20748 8.73143 4.45368 7.50042 5.26719 6.70756C5.41755 6.56102 5.58021 6.42767 5.75339 6.30897C6.69039 5.66675 7.94578 5.66675 10.4566 5.66675H12.0176C14.5284 5.66675 15.7838 5.66675 16.7208 6.30897C16.8939 6.42767 17.0566 6.56102 17.207 6.70756C18.0205 7.50042 18.2667 8.73143 18.7591 11.1934C19.466 14.7281 19.8195 16.4955 19.0058 17.7478C18.8585 17.9746 18.6865 18.1843 18.493 18.3733C17.4246 19.4167 15.6223 19.4167 12.0176 19.4167H10.4566C6.85189 19.4167 5.04956 19.4167 3.98111 18.3733C3.78765 18.1843 3.61569 17.9746 3.46836 17.7478C2.65467 16.4955 3.00814 14.7281 3.71507 11.1935Z'
                     stroke='currentColor'
-                    stroke-width='1.5'
+                    strokeWidth='1.5'
                   ></path>
                   <circle
                     opacity='0.5'
@@ -816,8 +816,8 @@ const Navbar = () => {
                     opacity='0.5'
                     d='M8.48706 5.66667V4.75C8.48706 3.23122 9.71828 2 11.2371 2C12.7558 2 13.9871 3.23122 13.9871 4.75V5.66667'
                     stroke='currentColor'
-                    stroke-width='1.5'
-                    stroke-linecap='round'
+                    strokeWidth='1.5'
+                    strokeLinecap='round'
                   ></path>
                 </svg>
                 <h3 className='text-#464646 group-hover:text-#5B9982'>Cart</h3>
@@ -904,13 +904,13 @@ const Navbar = () => {
                 cy='10.5417'
                 r='8.70833'
                 stroke='currentColor'
-                stroke-width='1.5'
+                strokeWidth='1.5'
               ></circle>
               <path
                 d='M16.9583 16.9583L20.1666 20.1667'
                 stroke='#1C274C'
-                stroke-width='1.5'
-                stroke-linecap='round'
+                strokeWidth='1.5'
+                strokeLinecap='round'
               ></path>
             </svg>
           </div>
@@ -930,13 +930,13 @@ const Navbar = () => {
                 opacity='0.5'
                 d='M1.83331 11.1869C1.83331 9.0892 1.83331 8.04034 2.30925 7.17085C2.78518 6.30136 3.65468 5.76172 5.39368 4.68245L7.22701 3.54463C9.06525 2.40377 9.98437 1.83334 11 1.83334C12.0156 1.83334 12.9347 2.40377 14.7729 3.54463L16.6063 4.68245C18.3453 5.76172 19.2148 6.30136 19.6907 7.17085C20.1666 8.04034 20.1666 9.0892 20.1666 11.1869V12.5812C20.1666 16.157 20.1666 17.9449 19.0927 19.0558C18.0188 20.1667 16.2903 20.1667 12.8333 20.1667H9.16665C5.70968 20.1667 3.9812 20.1667 2.90725 19.0558C1.83331 17.9449 1.83331 16.157 1.83331 12.5812V11.1869Z'
                 stroke='currentColor'
-                stroke-width='1.5'
+                strokeWidth='1.5'
               ></path>
               <path
                 d='M11 13.75L11 16.5'
                 stroke='currentColor'
-                stroke-width='1.5'
-                stroke-linecap='round'
+                strokeWidth='1.5'
+                strokeLinecap='round'
               ></path>
             </svg>
           </a>
@@ -953,7 +953,7 @@ const Navbar = () => {
               <path
                 d='M3.71507 11.1935C4.20748 8.73143 4.45368 7.50042 5.26719 6.70756C5.41755 6.56102 5.58021 6.42767 5.75339 6.30897C6.69039 5.66675 7.94578 5.66675 10.4566 5.66675H12.0176C14.5284 5.66675 15.7838 5.66675 16.7208 6.30897C16.8939 6.42767 17.0566 6.56102 17.207 6.70756C18.0205 7.50042 18.2667 8.73143 18.7591 11.1934C19.466 14.7281 19.8195 16.4955 19.0058 17.7478C18.8585 17.9746 18.6865 18.1843 18.493 18.3733C17.4246 19.4167 15.6223 19.4167 12.0176 19.4167H10.4566C6.85189 19.4167 5.04956 19.4167 3.98111 18.3733C3.78765 18.1843 3.61569 17.9746 3.46836 17.7478C2.65467 16.4955 3.00814 14.7281 3.71507 11.1935Z'
                 stroke='currentColor'
-                stroke-width='1.5'
+                strokeWidth='1.5'
               ></path>
               <circle
                 opacity='0.5'
@@ -973,8 +973,8 @@ const Navbar = () => {
                 opacity='0.5'
                 d='M8.48706 5.66667V4.75C8.48706 3.23122 9.71828 2 11.2371 2C12.7558 2 13.9871 3.23122 13.9871 4.75V5.66667'
                 stroke='currentColor'
-                stroke-width='1.5'
-                stroke-linecap='round'
+                strokeWidth='1.5'
+                strokeLinecap='round'
               ></path>
             </svg>
             <div className='w-[26px] h-[26px] absolute top-[-17px] right-[-19px]'>
@@ -1000,7 +1000,7 @@ const Navbar = () => {
                 cy='5.49992'
                 r='3.66667'
                 stroke='currentColor'
-                stroke-width='1.5'
+                strokeWidth='1.5'
               ></circle>
               <ellipse
                 opacity='0.5'
@@ -1009,13 +1009,13 @@ const Navbar = () => {
                 rx='6.41667'
                 ry='3.66667'
                 stroke='currentColor'
-                stroke-width='1.5'
+                strokeWidth='1.5'
               ></ellipse>
             </svg>
           </div>
         </li>
       </ul>
-    </div>
+    </>
   );
 };
 
