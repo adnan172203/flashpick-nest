@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.btn-grad-green {
+  @apply grad-green text-white;
+}
+
+.btn-grad-green {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+  background: linear-gradient(136deg, #57ad8d 0%, #5b9982 100%);
+}
+
+.btn-grad-green:hover {
+  background: linear-gradient(134deg, #d47869 0%, #cc5d56 100%);
+}
+
+.grad-green {
+  background: linear-gradient(136deg, #57ad8d 0%, #5b9982 100%);
+}
+.grad-green:hover {
+  background: linear-gradient(134deg, #d47869 0%, #cc5d56 100%);
+}
