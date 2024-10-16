@@ -39,10 +39,12 @@ import { createSlice } from '@reduxjs/toolkit';
 
 interface ModalState {
   isRegisterModalOpen: boolean;
+  isLoginModalOpen: boolean;
 }
 
 const initialState: ModalState = {
   isRegisterModalOpen: false,
+  isLoginModalOpen: false,
 };
 
 const authModalSlice = createSlice({
@@ -52,8 +54,11 @@ const authModalSlice = createSlice({
     toggleRegisterModal: (state: ModalState) => {
       state.isRegisterModalOpen = !state.isRegisterModalOpen;
     },
+    toggleLoginModal: (state: ModalState) => {
+      state.isLoginModalOpen = !state.isLoginModalOpen;
+    },
   },
 });
 
-export const { toggleRegisterModal } = authModalSlice.actions;
+export const { toggleRegisterModal, toggleLoginModal } = authModalSlice.actions;
 export default authModalSlice.reducer;
