@@ -1,14 +1,35 @@
+'use client';
+
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '@/lib/store';
+import { toggleRegisterModal } from '@/lib/features/nav/authToggleSlice';
 
 const Register = () => {
+  const dispatch = useDispatch();
+  const isRegisterModalOpen = useSelector(
+    (state: RootState) => state.modal.isRegisterModalOpen
+  );
+
+  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      dispatch(toggleRegisterModal());
+    }
+  };
+
   return (
     <div
       id='register-wrapper'
-      className='invisible opacity-0 w-full h-screen fixed top-0 left-0 bg-#17201D/50 z-[999] overflow-y-scroll overflow-x-hidden 2xl:overflow-hidden transition-all duration-500'
+      onClick={handleOverlayClick}
+      className={`${
+        isRegisterModalOpen ? 'opacity-100 visible' : 'invisible opacity-0'
+      } w-full h-screen fixed top-0 left-0 bg-#17201D/50 z-[999] overflow-y-scroll overflow-x-hidden 2xl:overflow-hidden transition-all duration-500`}
     >
       <div
         id='register-main'
-        className='bg-white absolute top-2/4 -translate-y-full left-2/4 -translate-x-2/4 w-full h-full max-w-[560px] max-h-[804px] transition-transform duration-500 py-10 px-5 md:py-60px md:px-30px rounded flex flex-col items-center justify-center'
+        className={`bg-white absolute left-1/2 -translate-x-1/2 w-full h-full max-w-[560px] max-h-[804px] py-10 px-5 md:py-60px md:px-30px rounded flex flex-col items-center justify-center transition-all duration-500 ${
+          isRegisterModalOpen ? 'top-[7%]' : '-top-full'
+        }`}
       >
         {/* <!-- logo  --> */}
         <div className='max-w-[100px] md:max-w-[183px]'>

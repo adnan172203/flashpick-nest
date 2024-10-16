@@ -1,6 +1,17 @@
+'use client';
+
+import { toggleRegisterModal } from '@/lib/features/nav/authToggleSlice';
 import React from 'react';
 
+import { useDispatch } from 'react-redux';
+
 const Navbar = () => {
+  const dispatch = useDispatch();
+
+  const handleRegisterClick = () => {
+    dispatch(toggleRegisterModal());
+  };
+
   return (
     <>
       <div className='h-full flex justify-center md:justify-between items-center gap-5'>
@@ -687,7 +698,10 @@ const Navbar = () => {
           {/* <!-- nav links  --> */}
           <ul className='flex items-center space-x-30px lg:space-x-45px text-[13px] leading-[14px] text-center'>
             {/* <!-- sign in  --> */}
-            <li className='open-login hidden lg:block'>
+            <li
+              className='open-login hidden lg:block'
+              onClick={handleRegisterClick}
+            >
               <div className='group flex flex-col gap-[5px] justify-center items-center cursor-pointer'>
                 <svg
                   className='w-[22px] h-[22px] text-#17201D group-hover:text-#5B9982'
