@@ -115,16 +115,8 @@ import { ActiveUserData } from '../interfaces/active-user-data.interface';
 import { RefreshTokenIdsStorage } from './refresh-token-storage/refresh-token-ids.storage';
 import { InvalidateRefreshTokenError } from './errors/invalidate-refresh-token.error';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
+import { SignupDto } from './dto/auth.dto';
 dotenv.config();
-
-interface SignupParams {
-  name: string;
-  email: string;
-  password: string;
-  address: string;
-  role: string;
-  phoneNumber: string;
-}
 
 interface SigninParams {
   email: string;
@@ -148,7 +140,7 @@ export class AuthService {
     address,
     role,
     phoneNumber,
-  }: SignupParams): Promise<{ accessToken: string; refreshToken: string }> {
+  }: SignupDto): Promise<{ accessToken: string; refreshToken: string }> {
     const userExists = await this.userRepository.findOne({ where: { email } });
 
     if (userExists) {

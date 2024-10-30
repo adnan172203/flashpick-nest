@@ -28,7 +28,7 @@ export class User {
   @Column()
   email: string;
 
-  @Column()
+  @Column({ nullable: true })
   address: string;
 
   @Column({
@@ -38,7 +38,7 @@ export class User {
   })
   role: Role;
 
-  @Column()
+  @Column({ nullable: true })
   phoneNumber: string;
 
   @Column()

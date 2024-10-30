@@ -1,11 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authModalReducer from './features/nav/authToggleSlice';
+import { authApi } from './api/authApi';
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       modal: authModalReducer,
+      [authApi.reducerPath]: authApi.reducer,
     },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(authApi.middleware),
   });
 };
 

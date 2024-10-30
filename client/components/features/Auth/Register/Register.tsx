@@ -7,12 +7,30 @@ import {
   toggleLoginModal,
   toggleRegisterModal,
 } from '@/lib/features/nav/authToggleSlice';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { useSignUpMutation } from '@/lib/api/authApi';
+
+interface FormInputs {
+  name: string;
+  email: string;
+  password: string;
+  terms: boolean;
+}
 
 const Register = () => {
   const dispatch = useDispatch();
+
   const isRegisterModalOpen = useSelector(
     (state: RootState) => state.modal.isRegisterModalOpen
   );
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormInputs>();
+
+  const [signUp, { isLoading, isError, error }] = useSignUpMutation();
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
@@ -23,6 +41,15 @@ const Register = () => {
   const handleLoginClick = () => {
     dispatch(toggleLoginModal());
     dispatch(toggleRegisterModal());
+  };
+
+  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
+    try {
+      await signUp(data).unwrap();
+      console.log('User registered successfully');
+    } catch (err) {
+      console.error('Registration failed:', err);
+    }
   };
 
   return (
@@ -51,14 +78,18 @@ const Register = () => {
           Register with your name, email and password
         </h2>
 
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           {/* <!-- Name  --> */}
           <div className='relative inline-block w-full'>
             <input
               type='text'
+              {...register('name', { required: 'Name is required' })}
               className='w-full text-sm leading-[15px] capitalize pl-70px md:pl-[84px] pr-4 py-3 sm:py-5 bg-#F2F2F2 text-#8B8582 placeholder-#8B8582 border-none focus:outline-none focus:ring-1 focus:ring-#A0CFA0 rounded'
-              placeholder='name'
+              placeholder='Name'
             />
+            {errors.name && (
+              <span className='text-red-500'>{errors.name.message}</span>
+            )}
             <img
               src='../../../../images/icons/icon-user-edit.svg'
               className='absolute z-20 left-0 top-2/4 -translate-y-2/4 flex items-center pl-5'
@@ -71,9 +102,14 @@ const Register = () => {
           <div className='relative inline-block w-full mt-5'>
             <input
               type='email'
+              {...register('email', { required: 'Email is required' })}
               className='w-full text-sm leading-[15px] capitalize pl-70px md:pl-[84px] pr-4 py-3 sm:py-5 bg-#F2F2F2 text-#8B8582 placeholder-#8B8582 border-none focus:outline-none focus:ring-1 focus:ring-#A0CFA0 rounded'
               placeholder='Email'
             />
+            {errors.email && (
+              <span className='text-red-500'>{errors.email.message}</span>
+            )}
+
             <img
               src='../../../../images/icons/icon-mail.svg'
               className='absolute z-20 left-0 top-2/4 -translate-y-2/4 flex items-center pl-5'
@@ -87,9 +123,14 @@ const Register = () => {
             <input
               type='password'
               id='passwordInputRegister'
+              {...register('password', { required: 'Password is required' })}
               className='w-full text-sm leading-[15px] capitalize pl-70px md:pl-[84px] pr-4 py-3 sm:py-5 bg-#F2F2F2 text-#8B8582 placeholder-#8B8582 border-none focus:outline-none focus:ring-1 focus:ring-#A0CFA0 rounded'
-              placeholder='password'
+              placeholder='Password'
             />
+            {errors.password && (
+              <span className='text-red-500'>{errors.password.message}</span>
+            )}
+
             <img
               src='../../../../images/icons/icon-lock.svg'
               className='absolute z-20 left-0 top-2/4 -translate-y-2/4 flex items-center pl-5'
@@ -111,12 +152,22 @@ const Register = () => {
             <span className='absolute inset-y-0 left-0 top-2/4 -translate-y-2/4 h-6 w-[1px] bg-#DEDEDE ml-50px md:ml-[60px]'></span>
           </div>
 
+          {/* Terms Checkbox */}
           <label htmlFor='terms-register' className='flex items-center mb-5'>
-            <input
+            {/* <input
               type='checkbox'
               id='terms-register'
               name='terms-register'
               required
+              className='form-checkbox appearance-none text-#53615B w-3 h-3 md:w-18px md:h-18px border border-#53615B checked:border-none rounded-full focus:ring-#53615B outline-none ring-#53615B checked:ring-#53615B active:ring-#53615B transition duration-150 ease-in-out'
+            /> */}
+
+            <input
+              type='checkbox'
+              id='terms-register'
+              {...register('terms', {
+                required: 'You must agree to the terms',
+              })}
               className='form-checkbox appearance-none text-#53615B w-3 h-3 md:w-18px md:h-18px border border-#53615B checked:border-none rounded-full focus:ring-#53615B outline-none ring-#53615B checked:ring-#53615B active:ring-#53615B transition duration-150 ease-in-out'
             />
             <span className='ml-6px font-medium text-xs md:text-sm text-#8B8582 leading-[14px]'>
@@ -130,6 +181,10 @@ const Register = () => {
               </a>
             </span>
           </label>
+          {errors.terms && (
+            <span className='text-red-500'>{errors.terms.message}</span>
+          )}
+
           <button className='btn-grad-green py-17px px-5 w-full rounded font-medium text-[15px] leading-[15px]'>
             Register Now
           </button>
