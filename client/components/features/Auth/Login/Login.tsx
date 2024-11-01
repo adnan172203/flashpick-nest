@@ -3,21 +3,46 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/lib/store';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import {
   toggleLoginModal,
   toggleRegisterModal,
 } from '@/lib/features/nav/authToggleSlice';
+import { useSignInMutation } from '@/lib/api/authApi';
 
+interface LoginFormData {
+  email: string;
+  password: string;
+}
 const Login = () => {
   const dispatch = useDispatch();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormData>();
 
   const isLoginModalOpen = useSelector(
     (state: RootState) => state.modal.isLoginModalOpen
   );
 
+  const [loginUser, { isLoading, isError, error }] = useSignInMutation();
+
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       dispatch(toggleLoginModal());
+    }
+  };
+
+  const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
+    try {
+      const response = await loginUser(data).unwrap();
+      console.log('Login successful:', response);
+      // Close modal or perform further actions on success
+      dispatch(toggleLoginModal());
+    } catch (err) {
+      console.error('Failed to login:', err);
     }
   };
 
@@ -52,13 +77,14 @@ const Login = () => {
           Login with your email &amp; password
         </h2>
 
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           {/* <!-- email  --> */}
           <div className='relative inline-block w-full'>
             <input
               type='email'
               className='w-full text-sm leading-[15px] capitalize pl-70px md:pl-[84px] pr-4 py-3 sm:py-5 bg-#F2F2F2 text-#8B8582 placeholder-#8B8582 border-none focus:outline-none focus:ring-1 focus:ring-#A0CFA0 rounded'
               placeholder='Email'
+              {...register('email', { required: 'Email is required' })}
             />
             <img
               src='../../../../images/icons/icon-mail.svg'
@@ -67,14 +93,19 @@ const Login = () => {
             />
 
             <span className='absolute inset-y-0 left-0 top-2/4 -translate-y-2/4 h-6 w-[1px] bg-#DEDEDE ml-50px md:ml-[60px]'></span>
+            {errors.email && (
+              <p className='text-red-500 text-xs mt-1'>
+                {errors.email.message}
+              </p>
+            )}
           </div>
           {/* <!-- password  --> */}
           <div className='relative inline-block w-full mt-5 mb-18px'>
             <input
               type='password'
-              id='passwordInputLogin'
               className='w-full text-sm leading-[15px] capitalize pl-70px md:pl-[84px] pr-4 py-3 sm:py-5 bg-#F2F2F2 text-#8B8582 placeholder-#8B8582 border-none focus:outline-none focus:ring-1 focus:ring-#A0CFA0 rounded'
-              placeholder='password'
+              placeholder='Password'
+              {...register('password', { required: 'Password is required' })}
             />
             <img
               src='../../../../images/icons/icon-lock.svg'
@@ -95,6 +126,12 @@ const Login = () => {
             />
 
             <span className='absolute inset-y-0 left-0 top-2/4 -translate-y-2/4 h-6 w-[1px] bg-#DEDEDE ml-50px md:ml-[60px]'></span>
+
+            {errors.password && (
+              <p className='text-red-500 text-xs mt-1'>
+                {errors.password.message}
+              </p>
+            )}
           </div>
 
           <div className='flex justify-between items-center mb-5'>

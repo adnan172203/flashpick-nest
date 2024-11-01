@@ -154,14 +154,6 @@ const Register = () => {
 
           {/* Terms Checkbox */}
           <label htmlFor='terms-register' className='flex items-center mb-5'>
-            {/* <input
-              type='checkbox'
-              id='terms-register'
-              name='terms-register'
-              required
-              className='form-checkbox appearance-none text-#53615B w-3 h-3 md:w-18px md:h-18px border border-#53615B checked:border-none rounded-full focus:ring-#53615B outline-none ring-#53615B checked:ring-#53615B active:ring-#53615B transition duration-150 ease-in-out'
-            /> */}
-
             <input
               type='checkbox'
               id='terms-register'
