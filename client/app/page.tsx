@@ -1,11 +1,9 @@
-import Login from '@/components/features/Auth/Login/Login';
-import Register from '@/components/features/Auth/Register/Register';
+import Banner from '@/components/features/Banner/Banner';
 
 export default function Home() {
   return (
     <div>
-      <Register />
-      <Login />
+      <Banner />
     </div>
   );
 }

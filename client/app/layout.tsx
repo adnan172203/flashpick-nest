@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/common/Header/Header';
 import StoreProvider from './StoreProvider';
+import AuthModals from '@/components/features/Auth/AuthModals';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -24,6 +25,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <StoreProvider>
           <Header />
+          <AuthModals />
           {children}
         </StoreProvider>
       </body>
