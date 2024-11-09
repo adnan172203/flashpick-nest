@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import 'swiper/css';
+// import 'swiper/components/pagination/pagination.min.css';
+// import 'swiper/components/navigation/navigation.min.css';
 import './globals.css';
 import Header from '@/components/common/Header/Header';
 import StoreProvider from './StoreProvider';

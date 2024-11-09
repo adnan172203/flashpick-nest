@@ -338,3 +338,7 @@ input[type='number'] {
   .swiper-slide.swiper-slide-thumb-active {
   border: 1px solid #17201d;
 }
+
+/* .callToAction .swiper-slide {
+  width: auto;
+} */
