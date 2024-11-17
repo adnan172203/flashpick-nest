@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation } from 'swiper/modules';
@@ -36,6 +36,12 @@ const swiperParams = {
 };
 
 const WintersProduct = () => {
+  const [selectedColor, setSelectedColor] = useState('black');
+
+  const handleColorChange = (color: string) => {
+    setSelectedColor(color);
+  };
+
   return (
     <>
       <div className='w-full xl:max-w-[49%]'>
@@ -128,19 +134,24 @@ const WintersProduct = () => {
                           {/* <!-- product colors --> */}
                           <div className='mt-10px flex items-center w-14 justify-between'>
                             <input
-                              checked
                               type='radio'
                               name='radioGroup-1'
+                              checked={selectedColor === 'grey'}
+                              onChange={() => handleColorChange('grey')}
                               className="relative appearance-none w-3 h-3 rounded-full cursor-pointer bg-#D9D9D9 checked:text-#D9D9D9 checked:ring-1 checked:ring-black ring-offset-2 active:ring-black border-none before:absolute before:w-3 before:h-3 before:bg-#D9D9D9 before:content-[''] before:top-2/4 before:left-2/4 before:[transform:translate(-50%,-50%)] before:rounded-full"
                             />
                             <input
                               type='radio'
                               name='radioGroup-1'
+                              checked={selectedColor === 'black'}
+                              onChange={() => handleColorChange('grey')}
                               className="relative appearance-none w-3 h-3 rounded-full cursor-pointer bg-#303C4D checked:text-#303C4D checked:bg-#303C4D checked:ring-1 checked:ring-black ring-offset-2 active:ring-black border-none before:absolute before:w-3 before:h-3 before:bg-#303C4D before:content-[''] before:top-2/4 before:left-2/4 before:[transform:translate(-50%,-50%)] before:rounded-full"
                             />
                             <input
                               type='radio'
                               name='radioGroup-1'
+                              checked={selectedColor === 'purple'}
+                              onChange={() => handleColorChange('purple')}
                               className="relative appearance-none w-3 h-3 rounded-full cursor-pointer bg-#2E2E2E checked:text-#2E2E2E checked:ring-1 checked:ring-black ring-offset-2 active:ring-black border-none before:absolute before:w-3 before:h-3 before:bg-#2E2E2E before:content-[''] before:top-2/4 before:left-2/4 before:[transform:translate(-50%,-50%)] before:rounded-full"
                             />
                           </div>
