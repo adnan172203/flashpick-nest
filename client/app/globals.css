@@ -339,6 +339,82 @@ input[type='number'] {
   border: 1px solid #17201d;
 }
 
+.rich-editor {
+  width: 100%;
+  padding: 10px;
+  background-color: #f2f2f2;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  color: #17201d;
+}
+#editor1,
+#editor2,
+#editor3 {
+  border: none;
+  height: 130px;
+}
+
+/* Custom styling for Heading 1 option */
+
+.ql-toolbar.ql-snow {
+  border: 0px solid transparent !important;
+}
+.size-selector {
+  display: flex;
+}
+
+.size-selector input {
+  display: none;
+}
+
+.size-selector label {
+  display: block;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  border: 1px solid #f2f2f2;
+}
+
+.size-selector input:checked + label {
+  border-color: black;
+}
+@media (max-width: 768px) {
+  .ql-snow.ql-toolbar button,
+  .ql-snow .ql-toolbar button {
+    height: 16px !important;
+    width: 20px !important;
+  }
+}
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
 /* .callToAction .swiper-slide {
   width: auto;
 } */
+
+[type='checkbox'],
+[type='radio'] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding: 0;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  display: inline-block;
+  vertical-align: middle;
+  background-origin: border-box;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  flex-shrink: 0;
+  height: 1rem;
+  width: 1rem;
+  color: #2563eb;
+  background-color: #fff;
+  border-color: #6b7280;
+  border-width: 1px;
+  --tw-shadow: 0 0 #0000;
+}
