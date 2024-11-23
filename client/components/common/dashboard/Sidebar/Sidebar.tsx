@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 const Sidebar = () => {
   return (
@@ -148,7 +149,8 @@ const Sidebar = () => {
                   </defs>
                 </svg>
               </div>
-              <ul className='nav-links-list-sidebar absolute lg:static max-[1023px]:top-0 max-[1023px]:right-px max-[1023px]:translate-x-full lg:space-y-5px lg:max-h-0 transition-all duration-300 invisible max-[1023px]:w-max opacity-0 bg-#222B27 z-10'>
+              {/* <ul className='nav-links-list-sidebar absolute lg:static max-[1023px]:top-0 max-[1023px]:right-px max-[1023px]:translate-x-full lg:space-y-5px lg:max-h-0 transition-all duration-300 invisible max-[1023px]:w-max opacity-0 bg-#222B27 z-10'> */}
+              <ul className='nav-links-list-sidebar absolute lg:static max-[1023px]:top-0 max-[1023px]:right-px max-[1023px]:translate-x-full lg:space-y-5px lg:max-h-[1000px] transition-all duration-300  max-[1023px]:w-max opacity-100 bg-#222B27 z-10'>
                 {/* <!-- Products List  --> */}
                 <li>
                   <a
@@ -162,15 +164,15 @@ const Sidebar = () => {
                   </a>
                 </li>
                 <li>
-                  <a
-                    href='add-products.html'
+                  <Link
+                    href='/admin-dashboard/products/create'
                     className='group flex items-center gap-3 lg:gap-5 text-#BCBBC7 hover:text-white hover:bg-#847DD2 p-14px lg:pl-22px lg:rounded'
                   >
                     <span className='min-w-[3px] h-[3px] lg:min-w-[5px] lg:h-5px bg-#BCBBC7 group-hover:bg-white rounded-full inline-block'></span>
                     <span className='text-xs lg:text-base xl:leading-4 tracking-[0.16px]'>
                       Add New Product
                     </span>
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </li>
