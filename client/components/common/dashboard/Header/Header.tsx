@@ -91,7 +91,7 @@ const DashboardHeader = () => {
             {/* <!-- user profile  --> */}
             <li className='relative flex gap-10px sm:gap-14px user-profile-pic'>
               <img
-                src='./assets/admin-dashboard/user.png'
+                src='../../../../images/admin-dashboard/user.png'
                 className='min-w-[44px] h-[44px] rounded-full cursor-pointer'
                 alt=''
               />
@@ -107,7 +107,7 @@ const DashboardHeader = () => {
               <div className='user-profile-dropdown invisible opacity-0 bg-white shadow-userProfile absolute bottom-5 sm:bottom-0 -left-20 md:-left-70px translate-y-[calc(100%+39px)] w-max rounded transition-all duration-300'>
                 <div className='flex gap-14px px-5 sm:px-30px py-5 border-b border-b-#F2F2F2'>
                   <img
-                    src='./assets/admin-dashboard/user.png'
+                    src='../../../../images/admin-dashboard/user.png'
                     className='min-w-[44px] h-[44px] rounded-full'
                     alt=''
                   />
