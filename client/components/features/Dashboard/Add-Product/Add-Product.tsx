@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import FilterColor from './Filter-Color';
-import FilterSize from './Filter-Size';
-import RichTextEditor from './Tex-editor';
+import FilterColor from './components/Filter-Color';
+import FilterSize from './components/Filter-Size';
+import RichTextEditor from './components/Tex-editor';
 
 const AddProduct = () => {
   return (

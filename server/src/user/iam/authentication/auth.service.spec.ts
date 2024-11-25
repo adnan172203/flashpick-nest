@@ -7,6 +7,7 @@ import { HttpException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import jwtConfig from '../config/jwt.config';
 import { RefreshTokenIdsStorage } from './refresh-token-storage/refresh-token-ids.storage';
+import { Response } from 'express';
 
 const mockRepository = {
   create: jest.fn(),
@@ -17,6 +18,11 @@ const mockRepository = {
 const mockJwtService = {
   signAsync: jest.fn().mockResolvedValue('mocked_token'),
 };
+
+enum Role {
+  ADMIN = 'admin',
+  USER = 'user',
+}
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -82,7 +88,7 @@ describe('AuthService', () => {
         email: 'test1@example.com',
         password: 'password123',
         address: 'Test Address',
-        role: 'user',
+        role: Role.USER,
         phoneNumber: '1234567890',
       };
 
@@ -116,7 +122,7 @@ describe('AuthService', () => {
         email: 'test1@example.com',
         password: 'password123',
         address: 'Test Address',
-        role: 'user',
+        role: Role.USER,
         phoneNumber: '1234567890',
       };
 
@@ -128,6 +134,13 @@ describe('AuthService', () => {
     });
   });
 
+  const mockResponse = {
+    cookie: jest.fn().mockReturnThis(),
+    json: jest.fn().mockReturnThis(),
+    status: jest.fn().mockReturnThis(),
+    send: jest.fn().mockReturnThis(),
+  } as unknown as Response<any, Record<string, any>>;
+
   describe('signIn', () => {
     it('should throw an exception when user is not found', async () => {
       const signinParams = {
@@ -135,9 +148,20 @@ describe('AuthService', () => {
         password: 'password123',
       };
       mockRepository.findOne.mockResolvedValue(null);
-      await expect(authService.signIn(signinParams)).rejects.toThrow(
-        new HttpException('Invalid credentials', 400)
-      );
+      await expect(
+        authService.signIn(mockResponse, signinParams)
+      ).rejects.toThrow(new HttpException('Invalid credentials', 400));
+    });
+
+    it('should throw an exception when user is not found', async () => {
+      const signinParams = {
+        email: 'test1@example.com',
+        password: 'password123',
+      };
+      mockRepository.findOne.mockResolvedValue(null);
+      await expect(
+        authService.signIn(mockResponse, signinParams)
+      ).rejects.toThrow(new HttpException('Invalid credentials', 400));
     });
     it('should throw an exception when password is incorrect', async () => {
       const signinParams = {
@@ -152,9 +176,9 @@ describe('AuthService', () => {
       };
       mockRepository.findOne.mockResolvedValue(mockUser);
       (bcrypt.compare as jest.Mock).mockResolvedValue(false);
-      await expect(authService.signIn(signinParams)).rejects.toThrow(
-        new HttpException('Invalid credentials', 400)
-      );
+      await expect(
+        authService.signIn(mockResponse, signinParams)
+      ).rejects.toThrow(new HttpException('Invalid credentials', 400));
     });
     it('should login user and return the token', async () => {
       const signinParams = {
@@ -168,7 +192,7 @@ describe('AuthService', () => {
         role: 'user',
       };
       mockRepository.findOne.mockResolvedValue(mockUser);
-      const result = await authService.signIn(signinParams);
+      const result = await authService.signIn(mockResponse, signinParams);
       expect(result).toBeDefined();
       // Additional checks for JWT token could be done here
     });
