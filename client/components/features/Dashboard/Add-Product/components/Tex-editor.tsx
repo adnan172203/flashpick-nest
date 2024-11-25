@@ -5,7 +5,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // Import Quill styles
 // import './RichTextEditor.css'; // Optional custom styles (defined below)
 
-const RichTextEditor: React.FC = () => {
+const RichTextEditor = ({ title }: { title: string }) => {
   const [content, setContent] = useState<string>('');
 
   // Function to handle editor content changes
@@ -42,7 +42,7 @@ const RichTextEditor: React.FC = () => {
           htmlFor='editor'
           className='text-xs md:text-sm leading-15px text-#8B8582 mb-4'
         >
-          Full Description
+          {title}
         </label>
         <div className='rounded-lg shadow-sm bg-white border-red-600 mt-2'>
           <ReactQuill
