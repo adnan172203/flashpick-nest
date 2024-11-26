@@ -18,7 +18,7 @@ const FilterSize = () => {
             className={` w-12 h-12 flex items-center justify-center border border-gray-200 text-sm font-medium 
 transition-colors ${
               selectedSize === size
-                ? 'border-2 border-[#3fb7ad] bg-white text-black'
+                ? 'border-2 border-[#3ec1b6] bg-white text-black'
                 : 'bg-white text-gray-600 hover:bg-gray-50'
             }`}
           >

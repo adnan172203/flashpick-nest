@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authModalReducer from './features/nav/authToggleSlice';
+import imageReducer from './features/dashboard/imageSlice';
 import { authApi } from './api/authApi';
 
 export const makeStore = () => {
@@ -7,6 +8,7 @@ export const makeStore = () => {
     reducer: {
       modal: authModalReducer,
       [authApi.reducerPath]: authApi.reducer,
+      images: imageReducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(authApi.middleware),

@@ -6,7 +6,13 @@ import FilterSize from './components/Filter-Size';
 import RichTextEditor from './components/Tex-editor';
 import ImageUpload from './components/Image-Upload';
 
+import { useSelector } from 'react-redux';
+import { RootState } from '@/lib/store';
+
 const AddProduct = () => {
+  const images = useSelector((state: RootState) => state.images.images);
+  console.log('images', images);
+
   return (
     <>
       <main className='bg-#FAFAFA col-start-2 px-5 md:px-10 pt-6 pb-30px overflow-x-hidden'>
@@ -32,7 +38,24 @@ const AddProduct = () => {
                 id='imagePreviewContainer'
                 className='flex flex-wrap gap-4 mt-30px'
               >
-                <div className='w-60px h-60px min-[608px]:w-[100px] min-[608px]:h-[100px] min-[796px]:w-[132px] min-[796px]:h-[146px] py-25px px-[23px] bg-#F8F8F8 relative'>
+                {images.map((image, index) => (
+                  <div
+                    key={index}
+                    className='w-60px h-60px min-[608px]:w-[100px] min-[608px]:h-[100px] min-[796px]:w-[132px] min-[796px]:h-[146px] py-25px px-[23px] bg-[#F8F8F8] relative'
+                  >
+                    <img
+                      src={image}
+                      className='w-full h-full object-cover'
+                      alt=''
+                    />
+                    <img
+                      src='../../../images/icons/icon-close-solid.png'
+                      className='max-[607px]:w-15px absolute top-0 right-0 min-[608px]:top-5px min-[608px]:right-5px cursor-pointer'
+                      alt=''
+                    />
+                  </div>
+                ))}
+                {/* <div className='w-60px h-60px min-[608px]:w-[100px] min-[608px]:h-[100px] min-[796px]:w-[132px] min-[796px]:h-[146px] py-25px px-[23px] bg-[#F8F8F8] relative'>
                   <img
                     src='../../../../images/admin-product-list/12.png'
                     className='w-full h-full object-cover'
@@ -43,8 +66,8 @@ const AddProduct = () => {
                     className='max-[607px]:w-15px absolute top-0 right-0 min-[608px]:top-5px min-[608px]:right-5px cursor-pointer'
                     alt=''
                   />
-                </div>
-                <div className='w-60px h-60px min-[608px]:w-[100px] min-[608px]:h-[100px] min-[796px]:w-[132px] min-[796px]:h-[146px] py-25px px-[23px] bg-#F8F8F8 relative'>
+                </div> */}
+                {/* <div className='w-60px h-60px min-[608px]:w-[100px] min-[608px]:h-[100px] min-[796px]:w-[132px] min-[796px]:h-[146px] py-25px px-[23px] bg-[#F8F8F8] relative'>
                   <img
                     src='../../../../images/admin-product-list/13.png'
                     className='w-full h-full object-cover'
@@ -55,8 +78,8 @@ const AddProduct = () => {
                     className='max-[607px]:w-15px absolute top-0 right-0 min-[608px]:top-5px min-[608px]:right-5px cursor-pointer'
                     alt=''
                   />
-                </div>
-                <div className='w-60px h-60px min-[608px]:w-[100px] min-[608px]:h-[100px] min-[796px]:w-[132px] min-[796px]:h-[146px] py-25px px-[23px] bg-#F8F8F8 relative'>
+                </div> */}
+                {/* <div className='w-60px h-60px min-[608px]:w-[100px] min-[608px]:h-[100px] min-[796px]:w-[132px] min-[796px]:h-[146px] py-25px px-[23px] bg-[#F8F8F8] relative'>
                   <img
                     src='../../../../images/admin-product-list/14.png'
                     className='w-full h-full object-cover'
@@ -67,8 +90,8 @@ const AddProduct = () => {
                     className='max-[607px]:w-15px absolute top-0 right-0 min-[608px]:top-5px min-[608px]:right-5px cursor-pointer'
                     alt=''
                   />
-                </div>
-                <div className='w-60px h-60px min-[608px]:w-[100px] min-[608px]:h-[100px] min-[796px]:w-[132px] min-[796px]:h-[146px] py-25px px-[23px] bg-#F8F8F8 relative'>
+                </div> */}
+                {/* <div className='w-60px h-60px min-[608px]:w-[100px] min-[608px]:h-[100px] min-[796px]:w-[132px] min-[796px]:h-[146px] py-25px px-[23px] bg-[#F8F8F8] relative'>
                   <img
                     src='../../../../images/admin-product-list/15.png'
                     className='w-full h-full object-cover'
@@ -79,7 +102,7 @@ const AddProduct = () => {
                     className='max-[607px]:w-15px absolute top-0 right-0 min-[608px]:top-5px min-[608px]:right-5px cursor-pointer'
                     alt=''
                   />
-                </div>
+                </div> */}
               </div>
             </div>
             {/* <!-- add product info  --> */}
