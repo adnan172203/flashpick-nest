@@ -1,10 +1,14 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Check } from 'lucide-react';
 
-const FilterColor = () => {
-  const [selectedColors, setSelectedColors] = useState(new Set());
+interface colorFilterProps {
+  onColorChange: (value: string[]) => void;
+}
+
+const FilterColor = ({ onColorChange }: colorFilterProps) => {
+  const [selectedColors, setSelectedColors] = useState<string[]>([]);
   const colors = [
     { id: 'navy', label: 'Navy Blue', class: 'bg-blue-600' },
     { id: 'teal', label: 'Teal', class: 'bg-teal-500' },
@@ -15,14 +19,20 @@ const FilterColor = () => {
   ];
 
   const toggleColor = (colorId: string) => {
-    const newSelected = new Set(selectedColors);
-    if (newSelected.has(colorId)) {
-      newSelected.delete(colorId);
+    const newSelected = [...selectedColors];
+    const index = newSelected.indexOf(colorId);
+    if (index !== -1) {
+      newSelected.splice(index, 1);
     } else {
-      newSelected.add(colorId);
+      newSelected.push(colorId);
     }
     setSelectedColors(newSelected);
   };
+
+  useEffect(() => {
+    onColorChange(selectedColors);
+  }, [selectedColors, onColorChange]);
+
   return (
     <div className='w-full'>
       <h3 className='text-xs md:text-sm leading-15px text-#8B8582 pb-3 inline-block'>
@@ -30,11 +40,14 @@ const FilterColor = () => {
       </h3>
       <ul className='flex items-center gap-10px'>
         {colors.map((color) => {
-          const isSelected = selectedColors.has(color.id);
+          const isSelected = selectedColors.includes(color.id);
           return (
             <button
               key={color.id}
-              onClick={() => toggleColor(color.id)}
+              onClick={(e) => {
+                e.preventDefault();
+                toggleColor(color.id);
+              }}
               className={` w-6 h-6 rounded-full ${
                 color.class
               } hover:ring-2 hover:ring-offset-2 hover:ring-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 transition-all duration-200 flex items-center justify-center ${

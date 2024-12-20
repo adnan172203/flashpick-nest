@@ -29,7 +29,7 @@ interface ProductFormInput {
   price: number;
   quantity: number;
   sku: string;
-  color: string;
+  color: string[];
   size: string;
   stock: number;
   status: boolean;
@@ -72,6 +72,12 @@ const AddProduct = () => {
     additional: '',
   });
 
+  const [selectedColors, setSelectedColors] = useState<string[]>([]);
+
+  const handleColorChange = (color: string[]) => {
+    setSelectedColors(color);
+  };
+
   const handleContentChange = (value: string, type: DescriptionType) => {
     setDescriptions((prev) => ({
       ...prev,
@@ -91,13 +97,14 @@ const AddProduct = () => {
       const imageUrl = await handleImageUpload(images);
       const productData = {
         ...data,
+        price: Number(data.price),
+        quantity: Number(data.quantity),
+        // price: typeof data.price === 'string' ? parseFloat(data.price) : 0, // or any default value
         images: imageUrl,
         fullDescription: descriptions.full,
         shortDescription: descriptions.short,
         additionalText: descriptions.additional,
       };
-      console.log('product-data', typeof productData.price);
-      console.log('product-data', typeof productData.shortDescription);
 
       await addProduct(productData).unwrap();
       console.log('Product Created successfully');
@@ -387,7 +394,7 @@ const AddProduct = () => {
                 </div>
                 {/* <!-- Colors | Size  --> */}
                 <div className='flex flex-col md:flex-row gap-6'>
-                  <FilterColor />
+                  <FilterColor onColorChange={handleColorChange} />
                   <FilterSize />
                 </div>
                 {/* <!-- Full Description  --> */}
