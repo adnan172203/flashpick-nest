@@ -13,6 +13,9 @@ import {
 import { User } from '../../user/entities/user.entity';
 import { OrderItem } from './order-item.entity';
 import { ShippingAddress } from './shipping-address.entity';
+
+
+
 @Entity()
 export class Order {
   create(create: any) {

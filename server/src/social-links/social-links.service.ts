@@ -4,7 +4,7 @@ import {
   ConflictException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, DataSource, In, EntityManager } from 'typeorm';
+import { Repository, DataSource, EntityManager } from 'typeorm';
 import { CreateSocialLinkDto } from './dto/create-social-link.dto';
 import { SocialLink } from './entities/social-link.entity';
 import { User } from '../user/entities/user.entity';

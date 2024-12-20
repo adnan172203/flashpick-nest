@@ -122,21 +122,21 @@ export class AuthService {
 
     // Set cookies
     res.cookie('access_token', accessToken, {
-      httpOnly: true,
+      // httpOnly: true,
       secure: process.env.NODE_ENV === 'production', // Only send cookie over HTTPS in production
-      sameSite: 'strict',
-      maxAge: this.jwtConfiguration.accessTokenTtl * 1000, // Convert to milliseconds
+      // sameSite: 'strict',
+      maxAge: this.jwtConfiguration.accessTokenTtl * 100000, // Convert to milliseconds
     });
 
     res.cookie('refresh_token', refreshToken, {
-      httpOnly: true,
+      // httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      maxAge: this.jwtConfiguration.refreshTokenTtl * 1000,
+      maxAge: this.jwtConfiguration.refreshTokenTtl * 100000,
       path: '/auth/refresh', // Only send cookie to refresh endpoint
     });
 
-    return res.send({ message: 'Authentication successful' });
+    return res.send({ accessToken });
   }
 
   async refreshTokens(refreshTokenDto: RefreshTokenDto) {

@@ -3,40 +3,44 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Product } from './entities/product.entity';
 import { ProductImageGallery } from './entities/product-image-gallery-entity';
+import { Tag } from 'src/tags/entities/tag.entity';
+import { ProductDto, UpdateProductDto } from './dto/product.dto';
 
 interface ProductImage {
   imageUrl: string;
 }
 
-interface ProductParams {
-  name: string;
-  description: string;
-  price: number;
-  quantity: number;
-  sku: string;
-  color?: string;
-  size?: string;
-  stock: number;
-  status: boolean;
-  fullDescription: string;
-  additionalText: string;
-  images?: ProductImage[];
-}
+// interface ProductParams {
+//   name: string;
+//   description: string;
+//   price: number;
+//   quantity: number;
+//   sku: string;
+//   color?: string;
+//   size?: string;
+//   stock: number;
+//   status: boolean;
+//   fullDescription: string;
+//   additionalText: string;
+//   images?: ProductImage[];
+//   tags?: string[];
+// }
 
-interface UpdateProductParams {
-  name?: string;
-  description?: string;
-  price?: number;
-  quantity?: number;
-  sku?: string;
-  color?: string;
-  size?: string;
-  stock?: number;
-  status?: boolean;
-  fullDescription?: string;
-  additionalText?: string;
-  images?: ProductImage[];
-}
+// interface UpdateProductParams {
+//   name?: string;
+//   description?: string;
+//   price?: number;
+//   quantity?: number;
+//   sku?: string;
+//   color?: string;
+//   size?: string;
+//   stock?: number;
+//   status?: boolean;
+//   fullDescription?: string;
+//   additionalText?: string;
+//   images?: ProductImage[];
+//   tags?: string[];
+// }
 
 @Injectable()
 export class ProductService {
@@ -47,12 +51,13 @@ export class ProductService {
     private readonly productImageRepository: Repository<ProductImageGallery>
   ) {}
 
-  async createProduct({ ...product }: ProductParams) {
+  async createProduct({ ...product }: ProductDto) {
     let { images, ...productData } = product;
+    console.log('productData=====================>>>>>>>', productData);
+
     const newProduct = this.productRepository.create(productData);
 
     const savedProduct = await this.productRepository.save(newProduct);
-
     this.createProductWithImage(savedProduct, images);
 
     return savedProduct;
@@ -60,7 +65,7 @@ export class ProductService {
 
   async updateProduct(
     id: string,
-    { images, ...productData }: UpdateProductParams
+    { images, ...productData }: UpdateProductDto
   ) {
     const existingProduct = await this.productRepository.findOne({
       where: { id },
@@ -90,7 +95,7 @@ export class ProductService {
 
   async getAllProducts() {
     return this.productRepository.find({
-      relations: ['images', 'categories', 'reviews'],
+      relations: ['images', 'categories', 'reviews', 'tags'],
     });
   }
 
@@ -121,6 +126,7 @@ export class ProductService {
     product: Product,
     productImages: ProductImage[]
   ) {
+    console.log('Images:===================', productImages);
     const promiseItems = productImages.map(({ imageUrl }: ProductImage) => {
       return this.productImageRepository.save({
         productId: product,

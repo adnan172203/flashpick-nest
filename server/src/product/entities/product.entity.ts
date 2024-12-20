@@ -24,9 +24,6 @@ export class Product {
   @Column({ type: 'varchar', length: 255 })
   name: string;
 
-  @Column({ type: 'text' })
-  description: string;
-
   @Column({ type: 'decimal' })
   price: number;
 
@@ -50,6 +47,9 @@ export class Product {
 
   @Column({ type: 'text' })
   fullDescription: string;
+
+  @Column({ type: 'text' })
+  shortDescription: string;
 
   @Column({ type: 'text' })
   additionalText: string;

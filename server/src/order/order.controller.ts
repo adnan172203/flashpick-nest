@@ -6,8 +6,10 @@ import { CreateOrderDto } from './dto/create-order.dto';
 export class OrderController {
   constructor(private readonly ordersService: OrderService) {}
 
-  @Post()
-  create(@Body() createOrderDto: CreateOrderDto) {
+  @Post('')
+  create(@Body() createOrderDto) {
+    console.log('createOrderDto========>>>>>.', createOrderDto);
+
     return this.ordersService.createOrder(createOrderDto);
   }
 

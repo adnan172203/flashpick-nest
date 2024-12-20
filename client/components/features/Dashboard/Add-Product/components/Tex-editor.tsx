@@ -5,12 +5,26 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // Import Quill styles
 // import './RichTextEditor.css'; // Optional custom styles (defined below)
 
-const RichTextEditor = ({ title }: { title: string }) => {
+interface RichTextEditorProps {
+  title: string;
+  descriptionType: DescriptionType;
+  onChange: (value: string, type: DescriptionType) => void;
+  register: any;
+}
+
+export type DescriptionType = 'full' | 'short' | 'additional';
+const RichTextEditor = ({
+  title,
+  descriptionType,
+  onChange,
+  register,
+}: RichTextEditorProps) => {
   const [content, setContent] = useState<string>('');
 
   // Function to handle editor content changes
   const handleContentChange = (value: string) => {
     setContent(value);
+    onChange(value, descriptionType);
   };
 
   // Custom toolbar options
@@ -46,7 +60,7 @@ const RichTextEditor = ({ title }: { title: string }) => {
         </label>
         <div className='rounded-lg shadow-sm bg-white border-red-600 mt-2'>
           <ReactQuill
-            id='editor'
+            id='editor' // Unique ID
             value={content}
             onChange={handleContentChange}
             modules={modules}
@@ -59,5 +73,4 @@ const RichTextEditor = ({ title }: { title: string }) => {
     </>
   );
 };
-
 export default RichTextEditor;

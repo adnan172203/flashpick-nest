@@ -2,6 +2,7 @@ import React, { useState, useRef, DragEvent } from 'react';
 import { CloudUpload, ImageIcon } from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addImages } from '@/lib/features/dashboard/imageSlice';
+import { handleImageUpload } from '@/utils/ImageUpload';
 
 interface FileUploadProps {
   onFileSelect?: (file: File) => void;
@@ -15,7 +16,7 @@ const ImageUpload = ({
   const [isDragging, setIsDragging] = useState(false);
   const [error, setError] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [images, setImages] = useState<any[]>([]);
+  const [images, setImages] = useState<string[]>([]);
 
   const dispatch = useDispatch();
 
@@ -59,35 +60,6 @@ const ImageUpload = ({
     }
   };
 
-  // const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const files = e.target.files;
-  //   if (files) {
-  //     const fileArray = Array.from(files);
-  //     // Add console.log here to check files
-  //     console.log('Selected files:', fileArray);
-
-  //     const newImageUrls = fileArray.map((file) => URL.createObjectURL(file));
-  //     // Add console.log here to check URLs
-  //     console.log('Created URLs:', newImageUrls);
-
-  //     setImages((prevImages) => {
-  //       const updatedImages = [...prevImages, ...newImageUrls];
-  //       // Add console.log here to check final array
-  //       console.log('Updated images array:', updatedImages);
-  //       return updatedImages;
-  //     });
-  //   }
-  // };
-
-  // const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const files = e.target.files;
-  //   if (files) {
-  //     const fileArray = Array.from(files);
-  //     console.log('Selected files:', fileArray);
-  //     setImages((prevImages) => [...prevImages, ...fileArray]);
-  //   }
-  // };
-
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
@@ -102,40 +74,6 @@ const ImageUpload = ({
       dispatch(addImages(updatedImages));
     }
   };
-
-  // const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const files = e.target.files;
-  //   if (files) {
-  //     const fileArray = Array.from(files);
-
-  //     // Create unique URLs for the new files
-  //     const newImageUrls = fileArray.map((file) => URL.createObjectURL(file));
-
-  //     // Prevent duplication by filtering out existing URLs
-  //     const filteredNewImages = newImageUrls.filter(
-  //       (url) => !images.includes(url)
-  //     );
-
-  //     // Update the state and Redux store
-  //     const updatedImages = [...images, ...filteredNewImages];
-  //     setImages(updatedImages);
-  //     dispatch(addImages(updatedImages));
-
-  //     // Clear the file input to allow re-uploading
-  //     e.target.value = '';
-  //   }
-  // };
-
-  // const handleImageUpload = async () => {
-  //   const data = new FormData();
-  //   data.append('file', product.image);
-  //   data.append('upload_preset', process.env.UPLOAD_PRESET);
-  //   data.append('cloud_name', process.env.CLOUD_NAME);
-  //   const response = await axios.post(process.env.CLOUDINARY_URL, data);
-
-  //   const mediaUrl = response.data.url;
-  //   return mediaUrl;
-  // };
 
   return (
     <div

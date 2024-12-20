@@ -5,9 +5,6 @@ export class ProductDto {
   @IsString()
   name: string;
 
-  @IsString()
-  description: string;
-
   @IsInt()
   price: number;
 
@@ -33,11 +30,23 @@ export class ProductDto {
   fullDescription: string;
 
   @IsString()
+  shortDescription: string;
+
+  @IsString()
   additionalText: string;
 
   @IsOptional()
   @Type(() => ProductImageDto)
   images?: ProductImageDto[];
+
+  @IsOptional()
+  @Type(() => TagsDto)
+  tags?: TagsDto[];
+}
+
+export class TagsDto {
+  @IsString()
+  id: string;
 }
 
 export class ProductImageDto {
@@ -96,4 +105,8 @@ export class UpdateProductDto {
   @IsOptional()
   @Type(() => ProductImageDto)
   images?: ProductImageDto[];
+
+  @IsOptional()
+  @Type(() => TagsDto)
+  tags?: TagsDto[];
 }

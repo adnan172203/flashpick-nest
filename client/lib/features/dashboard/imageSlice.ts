@@ -2,10 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface ImageState {
   images: string[];
+  imageUrls: string[];
 }
 
 const initialState: ImageState = {
   images: [],
+  imageUrls: [],
 };
 
 export const imageSlice = createSlice({
