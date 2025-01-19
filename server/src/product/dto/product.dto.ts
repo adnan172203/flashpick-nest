@@ -1,5 +1,11 @@
 import { Type } from 'class-transformer';
-import { IsString, IsInt, IsBoolean, IsOptional } from 'class-validator';
+import {
+  IsString,
+  IsInt,
+  IsBoolean,
+  IsOptional,
+  IsArray,
+} from 'class-validator';
 
 export class ProductDto {
   @IsString()
@@ -14,17 +20,12 @@ export class ProductDto {
   @IsString()
   sku: string;
 
-  @IsString()
-  color: string;
+  @IsArray()
+  @IsString({ each: true })
+  color: string[];
 
   @IsString()
   size: string;
-
-  @IsInt()
-  stock: number;
-
-  @IsBoolean()
-  status: boolean;
 
   @IsString()
   fullDescription: string;
@@ -79,20 +80,12 @@ export class UpdateProductDto {
   sku: string;
 
   @IsOptional()
-  @IsString()
-  color: string;
+  // @IsString()
+  color: string[];
 
   @IsOptional()
   @IsString()
   size: string;
-
-  @IsOptional()
-  @IsInt()
-  stock: number;
-
-  @IsOptional()
-  @IsBoolean()
-  status: boolean;
 
   @IsOptional()
   @IsString()

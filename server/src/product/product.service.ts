@@ -10,38 +10,6 @@ interface ProductImage {
   imageUrl: string;
 }
 
-// interface ProductParams {
-//   name: string;
-//   description: string;
-//   price: number;
-//   quantity: number;
-//   sku: string;
-//   color?: string;
-//   size?: string;
-//   stock: number;
-//   status: boolean;
-//   fullDescription: string;
-//   additionalText: string;
-//   images?: ProductImage[];
-//   tags?: string[];
-// }
-
-// interface UpdateProductParams {
-//   name?: string;
-//   description?: string;
-//   price?: number;
-//   quantity?: number;
-//   sku?: string;
-//   color?: string;
-//   size?: string;
-//   stock?: number;
-//   status?: boolean;
-//   fullDescription?: string;
-//   additionalText?: string;
-//   images?: ProductImage[];
-//   tags?: string[];
-// }
-
 @Injectable()
 export class ProductService {
   constructor(
@@ -53,7 +21,6 @@ export class ProductService {
 
   async createProduct({ ...product }: ProductDto) {
     let { images, ...productData } = product;
-    console.log('productData=====================>>>>>>>', productData);
 
     const newProduct = this.productRepository.create(productData);
 
@@ -126,7 +93,6 @@ export class ProductService {
     product: Product,
     productImages: ProductImage[]
   ) {
-    console.log('Images:===================', productImages);
     const promiseItems = productImages.map(({ imageUrl }: ProductImage) => {
       return this.productImageRepository.save({
         productId: product,

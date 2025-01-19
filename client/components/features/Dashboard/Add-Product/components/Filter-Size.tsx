@@ -1,10 +1,19 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const FilterSize = () => {
+interface SizeFilterProps {
+  onSizeChange: (value: string) => void;
+}
+
+const FilterSize = ({ onSizeChange }: SizeFilterProps) => {
   const [selectedSize, setSelectedSize] = useState('S');
 
   const sizes = ['S', 'M', 'L', 'XL', 'XXL'];
+
+  useEffect(() => {
+    onSizeChange(selectedSize);
+  }, []);
+
   return (
     <div className='flex flex-col gap-2 justify-start w-full'>
       <label className='text-xs md:text-sm leading-15px text-#8B8582'>
@@ -13,6 +22,7 @@ const FilterSize = () => {
       <div className='flex gap-2'>
         {sizes.map((size) => (
           <button
+            type='button'
             key={size}
             onClick={() => setSelectedSize(size)}
             className={` w-12 h-12 flex items-center justify-center border border-gray-200 text-sm font-medium 

@@ -1,5 +1,7 @@
-import { IsString } from 'class-validator';
+import { IsArray, IsString } from 'class-validator';
+
 export class CreateTagDto {
-  @IsString()
-  name: string;
+  @IsArray()
+  @IsString({ each: true })
+  name: string[];
 }

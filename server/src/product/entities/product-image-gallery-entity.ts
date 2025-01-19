@@ -17,7 +17,7 @@ export class ProductImageGallery {
   @ManyToOne(() => Product, (product) => product.images)
   productId: Product;
 
-  @Column()
+  @Column({ nullable: true })
   imageUrl: string;
 
   @CreateDateColumn({ type: 'timestamp' })

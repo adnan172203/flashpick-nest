@@ -11,8 +11,14 @@ export class TagsService {
     @InjectRepository(Tag)
     private readonly tagsRepository: Repository<Tag>
   ) {}
-  createTags({ ...tag }: CreateTagDto) {
-    return this.tagsRepository.save(tag);
+  async createTags({ name }: CreateTagDto) {
+    const savedTags = await Promise.all(
+      name.map(async (name) => {
+        const tag = { name }; // Create a tag object
+        return this.tagsRepository.save(tag); // Save the tag
+      })
+    );
+    return savedTags; // Return the saved tags
   }
 
   async findAllTags() {

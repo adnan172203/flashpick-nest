@@ -33,17 +33,11 @@ export class Product {
   @Column({ type: 'varchar', length: 255 })
   sku: string;
 
-  @Column({ type: 'varchar', length: 255 })
-  color: string;
+  @Column({ type: 'json', default: [] })
+  color: string[];
 
   @Column({ type: 'varchar', length: 255 })
   size: string;
-
-  @Column({ type: 'int' })
-  stock: number;
-
-  @Column({ type: 'boolean' })
-  status: boolean;
 
   @Column({ type: 'text' })
   fullDescription: string;

@@ -16,10 +16,12 @@ interface Product {
 
 interface AddProductState {
   products: Product[];
+  tags: string[];
 }
 
 const initialState: AddProductState = {
   products: [],
+  tags: [],
 };
 
 const addProductSlice = createSlice({
@@ -33,6 +35,11 @@ const addProductSlice = createSlice({
       state.products = state.products.filter(
         (product) => product.id !== action.payload
       );
+    },
+    // create tag
+    createTag: (state, action: PayloadAction<string>) => {
+      console.log('tags reducer==>>>:', action.payload);
+      state.tags.push(action.payload);
     },
   },
 });

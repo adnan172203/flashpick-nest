@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { StrictMode, useState } from 'react';
 import FilterColor from './components/Filter-Color';
 import FilterSize from './components/Filter-Size';
 import RichTextEditor from './components/Tex-editor';
@@ -12,7 +12,10 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/lib/store';
 import { useUploadImageMutation } from '@/lib/api/imageUploadApi';
-import { useAddProductMutation } from '@/lib/api/productApi';
+import {
+  useAddProductMutation,
+  useCreateTagMutation,
+} from '@/lib/api/productApi';
 
 interface Category {
   id: string;
@@ -73,9 +76,32 @@ const AddProduct = () => {
   });
 
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
+  const [selectedSize, setSelectedSize] = useState<string>('');
+  const [tagArray, setTagArray] = useState<string[]>([]);
+
+  const handleTagInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      const input = e.currentTarget;
+      const value = input.value.trim();
+
+      if (value && !tagArray.includes(value)) {
+        setTagArray([...tagArray, value]);
+        input.value = ''; // Clear the input
+      }
+    }
+  };
+
+  const removeTag = (tagToRemove: string) => {
+    setTagArray(tagArray.filter((tag) => tag !== tagToRemove));
+  };
 
   const handleColorChange = (color: string[]) => {
     setSelectedColors(color);
+  };
+
+  const handleSizeChange = (size: string) => {
+    setSelectedSize(size);
   };
 
   const handleContentChange = (value: string, type: DescriptionType) => {
@@ -84,30 +110,49 @@ const AddProduct = () => {
       [type]: value,
     }));
   };
-  // console.log('Description:', descriptions.additional);
 
   const [uploadImage, { isLoading, isError, error }] = useUploadImageMutation();
   const [
     addProduct,
-    { isLoading: isAdding, isError: isAddError, error: addError },
+    {
+      isLoading: isAddingProduct,
+      isError: isAddProductError,
+      error: addProductError,
+    },
   ] = useAddProductMutation();
+
+  const [
+    createTag,
+    { isLoading: isAddingTag, isError: isAddTagError, error: addTagError },
+  ] = useCreateTagMutation();
 
   const onSubmit: SubmitHandler<ProductFormInput> = async (data) => {
     try {
-      const imageUrl = await handleImageUpload(images);
-      const productData = {
-        ...data,
-        price: Number(data.price),
-        quantity: Number(data.quantity),
-        // price: typeof data.price === 'string' ? parseFloat(data.price) : 0, // or any default value
-        images: imageUrl,
-        fullDescription: descriptions.full,
-        shortDescription: descriptions.short,
-        additionalText: descriptions.additional,
-      };
+      // const tagData = await createTag({ name: data.name }).unwrap();
 
-      await addProduct(productData).unwrap();
-      console.log('Product Created successfully');
+      const imageUrl = await handleImageUpload(images);
+
+      // When sending the data:
+      const tagData = await createTag({ name: tagArray }).unwrap();
+      console.log('tagData==============>>>>>:', tagData);
+
+      if (tagData.length > 0 && tagData.some((tag: Tags) => tag.id)) {
+        const productData = {
+          ...data,
+          price: Number(data.price),
+          quantity: Number(data.quantity),
+          size: String(selectedSize),
+          color: selectedColors,
+          tags: tagData.map((tag: Tags) => ({ id: tag.id })),
+          images: imageUrl.map((url) => ({ imageUrl: url })),
+          fullDescription: descriptions.full,
+          shortDescription: descriptions.short,
+          additionalText: descriptions.additional,
+        };
+
+        await addProduct(productData).unwrap();
+        console.log('Product Created successfully');
+      }
     } catch (err) {
       console.error('Product Creation failed:', err);
     }
@@ -382,20 +427,47 @@ const AddProduct = () => {
                     </label>
                     <div className='relative py-6px px-5 bg-#F2F2F2 rounded flex flex-wrap items-center focus-within:border-#57AD8D'>
                       <div className='tag-input flex flex-wrap items-center w-auto'></div>
-                      <input
+                      {/* <input
                         id='tag-input-main'
                         type='text'
                         {...register('tags')}
                         placeholder='Enter tags'
                         className='py-4 px-0 border-none outline-none bg-transparent font-medium text-sm leading-15px text-#17201D focus:ring-0'
-                      />
+                      /> */}
+
+                      <div className='bg-#F2F2F2 rounded p-2'>
+                        <div className='flex flex-wrap gap-2 mb-2'>
+                          {tagArray.map((tag, index) => (
+                            <span
+                              key={index}
+                              className='bg-#57AD8D text-white px-2 py-1 rounded-full text-sm flex items-center gap-2'
+                            >
+                              {tag}
+                              <button
+                                type='button'
+                                onClick={() => removeTag(tag)}
+                                className='hover:text-red-500'
+                              >
+                                ×
+                              </button>
+                            </span>
+                          ))}
+                        </div>
+                        <input
+                          id='tag-input-main'
+                          type='text'
+                          onKeyDown={handleTagInput}
+                          placeholder='press Enter or comma to add'
+                          className='py-4 px-0 border-none outline-none bg-transparent font-medium text-sm leading-15px text-#17201D focus:ring-0 w-full'
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
                 {/* <!-- Colors | Size  --> */}
                 <div className='flex flex-col md:flex-row gap-6'>
                   <FilterColor onColorChange={handleColorChange} />
-                  <FilterSize />
+                  <FilterSize onSizeChange={handleSizeChange} />
                 </div>
                 {/* <!-- Full Description  --> */}
                 <div className='max-w-full break-words'>

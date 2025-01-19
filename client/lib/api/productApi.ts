@@ -27,7 +27,16 @@ export const productApi = createApi({
         body: productData,
       }),
     }),
+
+    // create tag endpoint
+    createTag: builder.mutation({
+      query: (tagData) => ({
+        url: '/tags/create',
+        method: 'POST',
+        body: tagData,
+      }),
+    }),
   }),
 });
 
-export const { useAddProductMutation } = productApi;
+export const { useAddProductMutation, useCreateTagMutation } = productApi;
