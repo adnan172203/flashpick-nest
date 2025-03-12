@@ -134,7 +134,6 @@ const AddProduct = () => {
 
       // When sending the data:
       const tagData = await createTag({ name: tagArray }).unwrap();
-      console.log('tagData==============>>>>>:', tagData);
 
       if (tagData.length > 0 && tagData.some((tag: Tags) => tag.id)) {
         const productData = {
